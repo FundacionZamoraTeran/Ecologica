@@ -34,10 +34,10 @@ mkdir .virtualenvs
 cd .virtualenvs
 ```
 
-### Crear un un virtualenv para PyGame
+### Crear un virtualenv para PyGame
 
 Usando el comando `virtualenv-3` o el comando `virtualenv-3.6` creamos un
-ambiente aislado para PyGame. Debemos especificar que es por defecto debe usar
+ambiente aislado para PyGame. Debemos especificar que por defecto se debe usar
 Python 2 como alias para `python`.
 
 ```sh
