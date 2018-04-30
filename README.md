@@ -14,7 +14,7 @@ creación de Actividades Educativas con Python y PyGame.
 
 * Esto garantiza ambientes de desarrollos portables y reproducibles.
 
-### Instalando `virtualenv` and `pip`
+### Instalando `virtualenv` and `pip`.
 
 > Fedora
 
