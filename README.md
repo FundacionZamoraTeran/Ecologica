@@ -26,7 +26,7 @@ su -c 'dnf install python2-virtualenv.noarch python3-virtualenv.noarch'
 su -c 'dnf install python2-pip.noarch python3-pip.noarch'
 ```
 
-### Crear un directorio para proyectos
+### Crear un directorio para proyectos.
 
 ```sh
 cd ~
