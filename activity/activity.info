@@ -1,10 +1,10 @@
 [Activity]
-name = Ecológica
+name = Ecologica
 activity_version = 0.01
 bundle_id = org.fundacionzt.ecologica
 exec = sugar-activity GameActivity.GameActivity
 icon = activity-icon.svg
 show_launcher = yes
 max_participants = 1
-summary = "Add brief summary :)"
+summary = "Una Eco aventura."
 license = LGPL-3
