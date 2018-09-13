@@ -15,8 +15,9 @@ class Eco:
         Main class that handle the game loop
     """
     running = True
-    def __init__(self):
+    def __init__(self, screen):
         self.clock = None
+        self.screen = screen
         self.running = True
         self.next_level = 0
 
@@ -33,7 +34,7 @@ class Eco:
         pygame.event.set_blocked([MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN])
         self.reset_clock()
         self.clock.tick(consts.FPS)
-        meny = menu.Menu(screen, self.clock)
+        meny = menu.Menu(self.screen, self.clock)
         meny.run()
         pygame.quit()
         sys.exit(0)
@@ -44,3 +45,14 @@ class Eco:
             var = self.levels[str(level)](screen, self.clock, slot)
             var.run()
             self.next_level = var.next_level
+
+if __name__ == "__main__":
+    SCREEN = pygame.display.set_mode(consts.RESOLUTION)
+    pygame.display.set_caption("Ecologica")
+    pygame.event.set_blocked(MOUSEMOTION)
+    pygame.event.set_blocked(MOUSEBUTTONUP)
+    pygame.event.set_blocked(MOUSEBUTTONDOWN)
+    pygame.event.set_blocked(VIDEORESIZE)
+    ECO = Eco(SCREEN)
+    ECO.run()
+    #profile.run('BIOTIN.loop()')
