@@ -91,13 +91,7 @@ class Menu:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
                         if self.start.flag is True:
-                            start_state = start.Start(self.screen, self.clock)
-                            start_state.run()
-                            if start_state.level_selected is not None:
-                                self.level_selected = start_state.level_selected
-                                self.slot_selected = start_state.slot_selected
-                                running = False
-                            del start_state
+                            self.level_selected = 0
                             utils.loading_screen(self.screen)
                         elif self.load_but.flag is True:
                             load_state = load.Load(self.screen, self.clock)

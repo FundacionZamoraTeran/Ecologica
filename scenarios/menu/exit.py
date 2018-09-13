@@ -55,8 +55,8 @@ class Exit:
                             self.yes.on_focus(self.screen)
                             self.no.on_focus(self.screen)
 
-            self.screen.blit(self.background, (390, 200))
-            self.screen.blit(self.yes.end, (503, 441))
-            self.screen.blit(self.no.base, (611, 441))
+            self.screen.blit(self.background, (0, 0))
+            self.screen.blit(self.yes.end, (503, 541))
+            self.screen.blit(self.no.base, (611, 541))
             pygame.display.flip()
             self.clock.tick(consts.FPS)
