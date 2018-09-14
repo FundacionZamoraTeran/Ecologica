@@ -4,7 +4,7 @@ from gi.repository import Gtk
 from scenarios.utils import utils
 from scenarios.utils import consts
 from scenarios.utils.button import Button
-from scenarios.menu import credits, options, help, exit 
+from scenarios.menu import credits, options, help, exit, load
 
 
 class Menu:
@@ -92,16 +92,15 @@ class Menu:
                     if event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
                         if self.start.flag is True:
                             self.level_selected = 0
-                            utils.loading_screen(self.screen)
+                            #utils.loading_screen(self.screen)
                         elif self.load_but.flag is True:
                             load_state = load.Load(self.screen, self.clock)
                             load_state.run()
                             if load_state.level_selected is not None:
-                                self.level_selected = 1
-                                self.slot_selected = load_state.slot_selected
+                                self.level_selected = "m"
                                 running = False
                             del load_state
-                            utils.loading_screen(self.screen)
+                            #utils.loading_screen(self.screen)
                         elif self.credits_but.flag is True:
                             credit = credits.Credit(self.screen, self.clock)
                             credit.run()

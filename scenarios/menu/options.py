@@ -27,7 +27,7 @@ class Option:
                                    "menu/options",
                                    level=self.opts[1])
 
-        self.exit = utils.load_image("credits/exit.png", "menu")
+        self.exit = utils.load_image("options/exit.png", "menu")
 
     def save(self):
         opts = (1.0, self.music_slider.level, self.fx_slider.level)
