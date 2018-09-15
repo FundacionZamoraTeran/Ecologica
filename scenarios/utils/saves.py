@@ -28,6 +28,7 @@ def first_save():
        used when initialising an empty save slot
     """
     saves["slot_1"] = {}
+    saves["slot_1"]["coins"] = 8
     saves["slot_1"]["stages"] = {}
     saves["slot_1"]["last_level_passed"] = {"code": 1, "name": "Inicio"}
     saves["slot_1"]["stages"]["inicio"] = True

@@ -92,7 +92,7 @@ class Menu:
                     if event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
                         if self.start.flag is True:
                             self.level_selected = 0
-                            #utils.loading_screen(self.screen)
+                            utils.loading_screen(self.screen)
                         elif self.load_but.flag is True:
                             load_state = load.Load(self.screen, self.clock)
                             load_state.run()
@@ -100,7 +100,7 @@ class Menu:
                                 self.level_selected = "m"
                                 running = False
                             del load_state
-                            #utils.loading_screen(self.screen)
+                            utils.loading_screen(self.screen)
                         elif self.credits_but.flag is True:
                             credit = credits.Credit(self.screen, self.clock)
                             credit.run()
