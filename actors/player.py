@@ -59,8 +59,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.rect.y+self.rect.height > 800: #taking into account the item bar
             self.rect.y = 800-self.rect.height
-        elif self.rect.y < 544: #this is based on an average of the levels
-            self.rect.y = 544
+        elif self.rect.y < 444: #this is based on an average of the levels
+            self.rect.y = 444
 
     def update(self):
         if self.direction == "right" or self.direction == "left":
