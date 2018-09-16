@@ -8,7 +8,7 @@ class Help:
     def __init__(self, screen, clock):
         self.screen = screen
         self.clock = clock
-        self.background = utils.load_image("help/background.jpg", "menu")
+        self.background = utils.load_image("help/background.png", "menu")
         self.exit = utils.load_image("help/exit.png", "menu")
 
     def run(self):
