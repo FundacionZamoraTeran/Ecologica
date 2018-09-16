@@ -40,7 +40,7 @@ class Load:
                         if self.save is None or self.save == {}:
                             self.fx_channel.play(utils.load_fx("denied.ogg"))
                         else:
-                            self.level_selected = 1
+                            self.level_selected = "m"
                             running = False
 
             self.screen.blit(self.background, (0, 0))
