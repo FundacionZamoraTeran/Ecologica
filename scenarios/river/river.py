@@ -341,10 +341,7 @@ class River:
                             and self.player.real_x+self.player.rect.width < 6296
                             and self.stats["flags"]["open"]):
                             self.stats["flags"]["purifier"] = True
-                        elif (self.player.real_x+self.player.rect.width > 6018
-                              and self.player.real_x+self.player.rect.width < 6296
-                              and self.stats["flags"]["purifier"]):
-                            self.stats["flags"]["purifier"] = True
+                            self.stats["flags"]["purified"] = True
 
                         if (self.player.real_x+self.player.rect.width > 7000
                             and self.player.real_x+self.player.rect.width < 7316
