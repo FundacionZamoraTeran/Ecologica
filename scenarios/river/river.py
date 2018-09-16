@@ -14,7 +14,6 @@ class River:
         Class representing the River level, recieves
         a Surface as a screen, and a Clock as clock
     """
-    #251x356
     def __init__(self, screen, clock):
         self.screen = screen
         self.clock = clock
@@ -53,6 +52,12 @@ class River:
                             "prompt.png",
                             "",
                             (400, 600)),
+            "owner": Prompt(self.screen,
+                            self.clock,
+                            (3740, 380),
+                            "prompt.png",
+                            "",
+                            (250, 400)),
             "trash":  Prompt(self.screen,
                              self.clock,
                              (4383, 580),
@@ -71,6 +76,12 @@ class River:
                                 "prompt.png",
                                 "",
                                 (400, 600)),
+            "glass":  Prompt(self.screen,
+                                self.clock,
+                                (7132, 380),
+                                "prompt.png",
+                                "",
+                                (350, 450)),
             "guard":  Prompt(self.screen,
                              self.clock,
                              (8950, 380),
@@ -93,7 +104,9 @@ class River:
             "net": utils.load_image("net.png", "river"),
             "stumps": utils.load_image("stumps.png", "river"),
             "cabin": (utils.load_image("base.png", "river/cabin"),
-                      utils.load_image("open.png", "river/cabin")),
+                      utils.load_image("open.png", "river/cabin"),
+                      utils.load_image("inside.png", "river/cabin")),
+            "owner": utils.load_image("owner.png", "river"),
             "bridge": (utils.load_image("base.png", "river/bridge"),
                        utils.load_image("repaired.png", "river/bridge")),
             "handrail": utils.load_image("handrail.png", "river/bridge"),
@@ -104,9 +117,12 @@ class River:
                       utils.load_image("tree_3.png", "river")),
             "fish": utils.load_image("0.png", "river/fish"),
             "purifier": (utils.load_image("base.png", "river/purifier"),
-                        utils.load_image("open.png", "river/purifier")),
+                         utils.load_image("open.png", "river/purifier"),
+                         utils.load_image("inside.png", "river/purifier")),
+            "cover": utils.load_image("over.png", "river/purifier"),
             "fence": (utils.load_image("closed.png", "river/fence"),
                       utils.load_image("open.png", "river/fence")),
+            "glass": utils.load_image("full.png", "river/glass"),
             "special": utils.load_image("key_item.png", "river"),
             "guard": utils.load_image("guard.png", "river")
         }
@@ -149,18 +165,21 @@ class River:
         }
 
         self.stats = {
-            "inv": {"money"}, # the items the player has
+            "inv": {}, # the items the player has
             "flags": {
                 "money": False, # the item is visible on map
                 "net": False, # the item is visible on map
                 "logger": False, # not with his full axe
-                "bridge": True, # is not repaired
+                "cabin": False, #is not showing inside
+                "bridge": False, # is not repaired
                 "trash": False, # Trash on river not cleaned
                 "fishing": False,
                 "fished": False, # have not caught the fish
-                "open": True, # the purifying plant is closed
+                "open": False, # the purifying plant is closed
+                "purifier": False, # is not showing inside
                 "purified": False, # river is not pure yet
-                "glass": True # the is guard not refreshed 
+                "picked": False, #glass is on the ground
+                "glass": False # the is guard not refreshed 
             }
         }
 
@@ -170,8 +189,7 @@ class River:
                              self.character,
                              9600,
                              True)
-        self.focus = "inventory"
-        self.visited = [False, False]
+        self.focus = "game"
 
     def run(self):
         utils.load_bg("hungarian.ogg")
@@ -193,7 +211,11 @@ class River:
                 self.screen.blit(self.props["stumps"], (992-abs(rel_x), 432))
                 if self.stats["flags"]["logger"] is True:
                     self.screen.blit(self.props["logger"][1], (2415-abs(rel_x), 405))
-                    self.screen.blit(self.props["cabin"][1], (3240-abs(rel_x), 220))
+                    if self.stats["flags"]["cabin"] is True:
+                        self.screen.blit(self.props["cabin"][2], (3240-abs(rel_x), 220))
+                        self.screen.blit(self.props["owner"], (3712-abs(rel_x), 420))
+                    else:
+                        self.screen.blit(self.props["cabin"][1], (3240-abs(rel_x), 220))
                 else:
                     self.screen.blit(self.props["logger"][0], (2415-abs(rel_x), 405))
                     self.screen.blit(self.props["cabin"][0], (3240-abs(rel_x), 220))
@@ -209,7 +231,10 @@ class River:
                     self.screen.blit(self.props["fish"], (5539-abs(rel_x), 690))
                 self.screen.blit(self.props["trees"][1], (5863-abs(rel_x), -100))
                 if self.stats["flags"]["open"] is True:
-                    self.screen.blit(self.props["purifier"][1], (6079-abs(rel_x), 183))
+                    if self.stats["flags"]["purifier"] is True:
+                        self.screen.blit(self.props["purifier"][2], (6079-abs(rel_x), 183))
+                    else:
+                        self.screen.blit(self.props["purifier"][1], (6079-abs(rel_x), 183))
                 else:
                     self.screen.blit(self.props["purifier"][0], (6079-abs(rel_x), 183))
                 self.screen.blit(self.props["trees"][2], (7347-abs(rel_x), -100))
@@ -223,6 +248,8 @@ class River:
                     self.screen.blit(self.props["guard"], (8920-abs(rel_x), 501))
                 self.actors_load(abs(rel_x))
                 self.screen.blit(self.props["handrail"], (4236-abs(rel_x), 548))
+                if self.stats["flags"]["open"] is True:
+                    self.screen.blit(self.props["cover"], (6297-abs(rel_x), 184))
                 self.load_hud()
             pygame.display.flip()
             self.clock.tick(consts.FPS)
@@ -251,8 +278,99 @@ class River:
                     elif event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
                         self.player.running = True
                     elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
-                        pass
-                        # move the focus to the contextual menu if present.
+                        if (self.player.real_x+self.player.rect.width > 500
+                            and self.player.real_x+self.player.rect.width < 553
+                            and not self.stats["flags"]["money"]):
+                            self.stats["flags"]["money"] = True
+                            self.stats["inv"]= {"money"}
+                        if (self.player.real_x+self.player.rect.width > 565
+                            and self.player.real_x+self.player.rect.width < 685
+                            and not self.stats["flags"]["net"]
+                            and "money" in self.stats["inv"]):
+                            self.stats["flags"]["net"] = True
+                            self.stats["inv"]= {"money", "net"}
+                        if (self.player.real_x+self.player.rect.width > 2400
+                            and self.player.real_x+self.player.rect.width < 2595
+                            and "axe" in self.stats["inv"]):
+                            #trigger another dialog
+                            self.stats["flags"]["logger"] = True
+                            self.stats["inv"]= {"money", "wood"}
+                        elif (self.player.real_x+self.player.rect.width > 2400
+                              and self.player.real_x+self.player.rect.width < 2595):
+                            pass#trigger dialog with logger
+                        if (self.player.real_x+self.player.rect.width > 3390
+                            and self.player.real_x+self.player.rect.width < 3650
+                            and self.stats["flags"]["logger"]):
+                            self.stats["flags"]["cabin"] = True
+                        elif (self.player.real_x+self.player.rect.width > 3390
+                            and self.player.real_x+self.player.rect.width < 3650
+                            and self.stats["flags"]["cabin"]):
+                            self.stats["flags"]["cabin"] = False
+                        #the various interactions with the cabin owner
+                        if (self.player.real_x+self.player.rect.width > 3700
+                            and self.player.real_x+self.player.rect.width < 3950
+                            and self.stats["flags"]["cabin"] and not self.stats["flags"]["fished"]):
+                            self.stats["flags"]["bridge"] = True
+                            self.stats["inv"]= {"fishing_rod"}
+                        if (self.player.real_x+self.player.rect.width > 3700
+                            and self.player.real_x+self.player.rect.width < 3950
+                            and self.stats["flags"]["cabin"] and self.stats["flags"]["fished"]):
+                            self.stats["inv"]= {"key"}
+
+                        if (self.player.real_x+self.player.rect.width > 4000
+                            and self.player.real_x+self.player.rect.width <= 4104
+                            and not self.stats["flags"]["trash"]
+                            and "net" in self.stats["inv"]):
+                            self.stats["flags"]["trash"] = True
+                            self.stats["inv"]= {"money", "axe"}
+                        if (self.player.real_x+self.player.rect.width > 5480
+                            and self.player.real_x+self.player.rect.width < 5620
+                            and not self.stats["flags"]["fished"]
+                            and "fishing_rod" in self.stats["inv"]):
+                            #logic for fishing stance on ezer
+                            self.stats["flags"]["fished"] = True
+                            self.stats["inv"]= {"fishing_rod", "fish"}
+
+                        #purifier states
+                        if (self.player.real_x+self.player.rect.width > 6018
+                            and self.player.real_x+self.player.rect.width < 6296
+                            and not self.stats["flags"]["open"]
+                            and "key" in self.stats["inv"]):
+                            self.stats["flags"]["open"] = True
+                        elif (self.player.real_x+self.player.rect.width > 6018
+                            and self.player.real_x+self.player.rect.width < 6296
+                            and self.stats["flags"]["open"]):
+                            self.stats["flags"]["purifier"] = True
+                        elif (self.player.real_x+self.player.rect.width > 6018
+                              and self.player.real_x+self.player.rect.width < 6296
+                              and self.stats["flags"]["purifier"]):
+                            self.stats["flags"]["purifier"] = True
+
+                        if (self.player.real_x+self.player.rect.width > 7000
+                            and self.player.real_x+self.player.rect.width < 7316
+                            and not self.stats["flags"]["picked"]):
+                            self.stats["flags"]["picked"] = True
+                            self.stats["inv"]= {"glass"}
+
+                        #guard
+                        if (self.player.real_x+self.player.rect.width > 8900
+                            and self.player.real_x+self.player.rect.width < 9080
+                            and not self.stats["flags"]["glass"]
+                            and "glass" in self.stats["inv"]):
+                            self.stats["flags"]["glass"] = True
+                            self.stats["inv"]= {}
+                        if (self.player.real_x+self.player.rect.width > 9080
+                            and self.player.real_x+self.player.rect.width < 9200
+                            and self.stats["flags"]["glass"]):
+                            #something of a congrats modal here
+                            running = False
+                            utils.loading_screen(self.screen)
+                            #save here
+                            if not self.slot["stages"]["rio"] is True:
+                                saves.save(6, "Rio Claro", "rio")
+
+
+
                     elif event.key == pygame.K_ESCAPE or event.key == consts.K_CIRCLE:
                         pass
                         # move focus to upper menu bar
@@ -287,18 +405,24 @@ class River:
             self.prompts["money"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 565
             and self.player.real_x+self.player.rect.width < 685
-            and not self.stats["flags"]["net"]):
+            and not self.stats["flags"]["net"]
+            and "money" in self.stats["inv"]):
             self.prompts["net"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 2400
-            and self.player.real_x+self.player.rect.width < 2495):
+            and self.player.real_x+self.player.rect.width < 2595):
             self.prompts["logger"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 3390
             and self.player.real_x+self.player.rect.width < 3650
             and self.stats["flags"]["logger"]):
             self.prompts["cabin"].float(rel_x)
+        if (self.player.real_x+self.player.rect.width > 3700
+            and self.player.real_x+self.player.rect.width < 3950
+            and self.stats["flags"]["cabin"]):
+            self.prompts["owner"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 4000
             and self.player.real_x+self.player.rect.width <= 4104
-            and not self.stats["flags"]["trash"]):
+            and not self.stats["flags"]["trash"]
+            and "net" in self.stats["inv"]):
             self.prompts["trash"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 5480
             and self.player.real_x+self.player.rect.width < 5620
@@ -306,8 +430,12 @@ class River:
              self.prompts["fish"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 6018
             and self.player.real_x+self.player.rect.width < 6296
-            and self.stats["flags"]["open"]):
+            and "key" in self.stats["inv"]):
              self.prompts["purifier"].float(rel_x)
+        if (self.player.real_x+self.player.rect.width > 7000
+            and self.player.real_x+self.player.rect.width < 7316
+            and not self.stats["flags"]["picked"]):
+             self.prompts["glass"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 8900
             and self.player.real_x+self.player.rect.width < 9080
             and not self.stats["flags"]["glass"]):
@@ -316,21 +444,33 @@ class River:
             and self.player.real_x+self.player.rect.width < 9200
             and self.stats["flags"]["glass"]):
             self.prompts["guard"].float(rel_x)
-        if self.player.real_x+self.player.rect.width > 4104 and self.stats["flags"]["bridge"] is False:
+        if 4090 < self.player.real_x < 4790:
+            self.player.rect.y = 444
+        if 4790 < self.player.real_x  < 7500:
+            if self.player.rect.y > 500:
+                self.player.rect.y = 500
+        if 8554 < self.player.real_x:
+            if self.player.rect.y < 492:
+                self.player.rect.y = 492
+        if self.player.real_x+self.player.rect.width > 4004 and self.stats["flags"]["bridge"] is False:
             if self.player.velocity > 0:
-                self.player.stage["x"] = -3440
-                self.player.real_x =  4104 -self.player.rect.width
-        elif self.player.real_x+self.player.rect.width > 6158 and self.stats["flags"]["open"] is False:
+                self.player.stage["x"] = -3340
+                self.player.real_x =  4004 -self.player.rect.width
+        elif self.player.real_x+self.player.rect.width > 6158 and self.stats["flags"]["purifier"] is False:
             if self.player.velocity > 0:
                 self.player.stage["x"] = -5632
                 self.player.real_x =  6158
-        print self.player.stage["x"]
+        print self.player.rect.y
         print self.player.real_x
         self.player.update()
 
     def load_items(self, rel_x):
-        self.screen.blit(self.props["money"], (523-rel_x, 617))
-        self.screen.blit(self.props["net"], (565-rel_x, 528))
+        if self.stats["flags"]["money"] is False:
+            self.screen.blit(self.props["money"], (523-rel_x, 617))
+        if self.stats["flags"]["net"] is False:
+            self.screen.blit(self.props["net"], (565-rel_x, 528))
+        if self.stats["flags"]["picked"] is False:
+            self.screen.blit(self.props["glass"], (7132-rel_x, 528))
 
     def load_hud(self):
         #top icons
