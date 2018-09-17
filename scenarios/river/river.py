@@ -23,7 +23,7 @@ class River:
         self.vx_channel = pygame.mixer.Channel(1)
         self.vx_channel.set_volume(consts.VX_VOLUME)
         self.font = utils.load_font("fedra.otf", 20)
-        self.next_level = 1
+        self.next_level = "m"
         self.character = "ezer"
         self.background = utils.load_image("background.png", "river")
         self.background_width = self.background.get_size()[0]
@@ -260,7 +260,6 @@ class River:
                     running = False
                     self.next_level = None
                 if event.type == pygame.KEYDOWN:
-                    pass
                     if event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
                         self.player.direction = "left"
                         self.player.running_velocity = -abs(self.player.running_velocity)
@@ -371,18 +370,6 @@ class River:
                     elif event.key == pygame.K_ESCAPE or event.key == consts.K_CIRCLE:
                         pass
                         # move focus to upper menu bar
-
-                    #     if (self.player.real_x+self.player.rect.width > 620
-                    #             and self.player.real_x+self.player.rect.width < 745):
-                    #         utils.loading_screen(self.screen)
-                    #         mid = middle.Middle(self.screen, self.clock, self.character)
-                    #         mid.run()
-                    #         del mid
-                    #         running = False
-                    #         utils.loading_screen(self.screen)
-                    #         #save here
-                    #         if not self.slot["stages"]["aldea_1"] is True:
-                    #             saves.save(self.slotname, 2, "Aldea Saar", "aldea_1")
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
                         self.player.direction = "stand"

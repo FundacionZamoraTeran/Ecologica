@@ -93,6 +93,7 @@ class Menu:
                         if self.start.flag is True:
                             self.level_selected = 0
                             utils.loading_screen(self.screen)
+                            running = False
                         elif self.load_but.flag is True:
                             load_state = load.Load(self.screen, self.clock)
                             load_state.run()
