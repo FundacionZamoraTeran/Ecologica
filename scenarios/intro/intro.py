@@ -109,7 +109,7 @@ class Intro:
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
                         self.player.direction = "stand"
                     elif event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
-                         self.player.running = False
+                        self.player.running = False
 
     def actors_load(self, rel_x):
         if 448 < self.player.real_x < 980:
