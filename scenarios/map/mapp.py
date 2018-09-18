@@ -33,7 +33,7 @@ class Map:
 
         if self.session["is_new?"]:
             self.current_slide = 1
-            self.marker_level = 0
+            self.marker_level = 1
         else:
             self.current_slide = 6
             self.marker_level = self.session["current_level"]
@@ -89,11 +89,7 @@ class Map:
                             self.marker_level = 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
                         if self.marker_level < 5:
-                            if (self.marker_level+1 > self.session["current_level"]
-                                    and not self.session["completed"]):
-                                self.marker_level = self.session["current_level"]
-                            else:
-                                self.marker_level += 1
+                            self.marker_level += 1
                         elif (4 < self.marker_level < 7 and
                               len(filter(lambda x: x is True, self.slot["stages"].values())) >= 6):
                             self.marker_level += 1
