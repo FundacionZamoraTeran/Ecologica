@@ -10,7 +10,7 @@ class Parrot(pygame.sprite.Sprite):
     """
     def __init__(self, screen, clock, pos, character,
                  stage_width=1200, scrolls=False,
-                 velocity=28):
+                 velocity=15):
         pygame.sprite.Sprite.__init__(self)
 
         self.screen = screen
