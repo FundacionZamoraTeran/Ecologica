@@ -27,7 +27,7 @@ class River:
         self.character = "ezer"
         self.background = utils.load_image("background.png", "river")
         self.background_width = self.background.get_size()[0]
-        self.current_slide = 36
+        self.current_slide = 1
         self.prompts = {
             "money": Prompt(self.screen,
                             self.clock,
