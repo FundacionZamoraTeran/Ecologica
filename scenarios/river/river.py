@@ -27,6 +27,7 @@ class River:
         self.character = "ezer"
         self.background = utils.load_image("background.png", "river")
         self.background_width = self.background.get_size()[0]
+        self.current_slide = 36
         self.prompts = {
             "money": Prompt(self.screen,
                             self.clock,
@@ -129,25 +130,39 @@ class River:
 
         self.hud = {
             "bar": utils.load_image("bar.png", "HUD"),
-            "bird_icon": utils.load_image("icon.png", "HUD"),
+            "bird_icon": Button((1053, 15),
+                                "icon1.png",
+                                "icon2.png",
+                                136,
+                                112,
+                                "HUD",
+                                flag=True),
             "counter": utils.load_image("counter.png", "HUD"),
-            "bird_modal": utils.load_image("bird_modal.png", "HUD"),
+            "bird_modal_1": utils.load_image("h1.png", "river/HUD"),
+            "bird_modal_2": utils.load_image("h2.png", "river/HUD"),
+            "bird_modal_3": utils.load_image("h3.png", "river/HUD"),
             "exit_bird": utils.load_image("exit.png", "HUD"),
-            "map_icon": utils.load_image("map.png", "HUD"),
+            "map_icon": Button((903, 15),
+                               "map1.png",
+                               "map2.png",
+                               140,
+                               108,
+                               "HUD",
+                               flag=True),
             "map_modal": utils.load_image("modal.png", "HUD"),
-            "yes": Button((503, 441),
+            "yes": Button((532, 449),
                           "yes1.png",
                           "yes2.png",
                           83,
                           56,
-                          "HUD",
-                          flag=True),
-            "no": Button((611, 441),
+                          "HUD"),
+            "no": Button((606, 449),
                          "no1.png",
                          "no2.png",
                          83,
                          56,
-                         "HUD")
+                         "HUD",
+                         flag=True)
         }
 
         self.inventory = {
@@ -183,6 +198,53 @@ class River:
             }
         }
 
+        self.dialogue = {
+            "1": utils.load_image("d1.png", "river/dialogue"),#parrot
+            "2": utils.load_image("d2.png", "river/dialogue"),
+            "3": utils.load_image("d3.png", "river/dialogue"),
+            "4": utils.load_image("d4.png", "river/dialogue"), #ezer
+            "5": utils.load_image("d5.png", "river/dialogue"),
+            "6": utils.load_image("d6.png", "river/dialogue"),
+            "7": utils.load_image("d7.png", "river/dialogue"), #logger
+            "8": utils.load_image("d8.png", "river/dialogue"), #ezer
+            "9": utils.load_image("d9.png", "river/dialogue"), #logger
+            "10": utils.load_image("d10.png", "river/dialogue"), #ezer
+            "11": utils.load_image("d11.png", "river/dialogue"), #logger
+            "12": utils.load_image("d12.png", "river/dialogue"), #ezer
+            "13": utils.load_image("d13.png", "river/dialogue"),
+            "14": utils.load_image("d14.png", "river/dialogue"),
+            "15": utils.load_image("d15.png", "river/dialogue"),
+            "16": utils.load_image("d16.png", "river/dialogue"), #logger
+            "17": utils.load_image("d17.png", "river/dialogue"), #ezer
+            "18": utils.load_image("d18.png", "river/dialogue"), #logger
+            "19": utils.load_image("d19.png", "river/dialogue"), #owner
+            "20": utils.load_image("d20.png", "river/dialogue"), #ezer
+            "21": utils.load_image("d21.png", "river/dialogue"), #owner
+            "22": utils.load_image("d22.png", "river/dialogue"), #ezer
+            "23": utils.load_image("d23.png", "river/dialogue"),
+            "24": utils.load_image("d24.png", "river/dialogue"),
+            "25": utils.load_image("d25.png", "river/dialogue"),  #owner
+            "26": utils.load_image("d26.png", "river/dialogue"),
+            "27": utils.load_image("d27.png", "river/dialogue"), #parrot
+            "28": utils.load_image("d28.png", "river/dialogue"),
+            "29": utils.load_image("d29.png", "river/dialogue"),
+            "30": utils.load_image("d30.png", "river/dialogue"), #guard
+            "31": utils.load_image("d31.png", "river/dialogue"), #guard
+            "32": utils.load_image("d32.png", "river/dialogue"), #ezer
+            "33": utils.load_image("d33.png", "river/dialogue"),  #guard
+            "34": utils.load_image("d34.png", "river/dialogue"), #parrot
+            "35": utils.load_image("d35.png", "river/dialogue") #ezer
+        }
+
+        self.icons = {
+            "ezer": utils.load_image("ezer_icon.png", "river"),
+            "owner": utils.load_image("owner_icon.png", "river"),
+            "logger": utils.load_image("logger_icon.png", "river"),
+            "guard": utils.load_image("guard_icon.png", "river"),
+            "parrot": utils.load_image("parrot_icon.png", "river")
+        }
+        self.show_bird_modal = False
+        self.show_map_modal = False
         self.player = Player(self.screen,
                               self.clock,
                              (150, 620),
@@ -191,12 +253,24 @@ class River:
                              True)
         self.focus = "game"
 
+        self.prev = Button((178, 703),
+                           "prev1.png",
+                           "prev2.png",
+                           48,
+                           42,
+                           "river")
+        self.next = Button((1104, 703),
+                           "next1.png",
+                           "next2.png",
+                           48,
+                           42,
+                           "river")
+
     def run(self):
         utils.load_bg("hungarian.ogg")
         pygame.mixer.music.set_volume(consts.BG_VOLUME)
         pygame.mixer.music.play(-1, 0.0)
         running = True
-
         while running:
             rel_x = self.player.stage["x"]
             if rel_x < consts.WIDTH_SCREEN:
@@ -246,10 +320,7 @@ class River:
                     self.screen.blit(self.props["fence"][0], (8209-abs(rel_x), 398))
                     self.screen.blit(self.props["special"], (8815-abs(rel_x), 326))
                     self.screen.blit(self.props["guard"], (8920-abs(rel_x), 501))
-                self.actors_load(abs(rel_x))
-                self.screen.blit(self.props["handrail"], (4236-abs(rel_x), 548))
-                if self.stats["flags"]["open"] is True:
-                    self.screen.blit(self.props["cover"], (6297-abs(rel_x), 184))
+                self.render_scene(self.current_slide, abs(rel_x))
                 self.load_hud()
             pygame.display.flip()
             self.clock.tick(consts.FPS)
@@ -261,115 +332,237 @@ class River:
                     self.next_level = None
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
-                        self.player.direction = "left"
-                        self.player.running_velocity = -abs(self.player.running_velocity)
-                        self.player.velocity = -abs(self.player.velocity)
+                        if self.current_slide == 36:
+                            if self.focus == "game":
+                                self.player.direction = "left"
+                                self.player.running_velocity = -abs(self.player.running_velocity)
+                                self.player.velocity = -abs(self.player.velocity)
+                            elif self.focus == "bar":
+                                if self.show_map_modal:
+                                    if self.hud["no"].flag:
+                                        self.hud["no"].flag = False
+                                        self.hud["yes"].flag = True
+                                        self.hud["no"].on_focus(self.screen)
+                                        self.hud["yes"].on_focus(self.screen)
+                                else:
+                                    if self.hud["bird_icon"].flag:
+                                        self.hud["bird_icon"].flag = False
+                                        self.hud["map_icon"].flag = True
+                                        self.hud["bird_icon"].on_focus(self.screen)
+                                        self.hud["map_icon"].on_focus(self.screen)
+                        elif ((1 < self.current_slide < 5)
+                              or (7 < self.current_slide < 12)
+                              or (15 < self.current_slide < 19)
+                              or (19 < self.current_slide < 23)
+                              or 25 < self.current_slide < 28
+                              or self.current_slide == 29
+                              or 31 < self.current_slide < 34):
+                            self.prev.on_press(self.screen)
+                            self.current_slide -= 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
-                        self.player.direction = "right"
-                        self.player.running_velocity = abs(self.player.running_velocity)
-                        self.player.velocity = abs(self.player.velocity)
-                    elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
-                        self.player.direction = "down"
-                        self.player.y_velocity = abs(self.player.y_velocity)
-                    elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
-                        self.player.direction = "up"
-                        self.player.y_velocity = -abs(self.player.y_velocity)
-                    elif event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
-                        self.player.running = True
-                    elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
-                        if (self.player.real_x+self.player.rect.width > 500
-                            and self.player.real_x+self.player.rect.width < 553
-                            and not self.stats["flags"]["money"]):
-                            self.stats["flags"]["money"] = True
-                            self.stats["inv"]= {"money"}
-                        if (self.player.real_x+self.player.rect.width > 565
-                            and self.player.real_x+self.player.rect.width < 685
-                            and not self.stats["flags"]["net"]
-                            and "money" in self.stats["inv"]):
-                            self.stats["flags"]["net"] = True
-                            self.stats["inv"]= {"money", "net"}
-                        if (self.player.real_x+self.player.rect.width > 2400
-                            and self.player.real_x+self.player.rect.width < 2595
-                            and "axe" in self.stats["inv"]):
-                            #trigger another dialog
-                            self.stats["flags"]["logger"] = True
-                            self.stats["inv"]= {"money", "wood"}
-                        elif (self.player.real_x+self.player.rect.width > 2400
-                              and self.player.real_x+self.player.rect.width < 2595):
-                            pass#trigger dialog with logger
-                        if (self.player.real_x+self.player.rect.width > 3390
-                            and self.player.real_x+self.player.rect.width < 3650
-                            and self.stats["flags"]["logger"]):
-                            self.stats["flags"]["cabin"] = True
-                        elif (self.player.real_x+self.player.rect.width > 3390
-                            and self.player.real_x+self.player.rect.width < 3650
-                            and self.stats["flags"]["cabin"]):
-                            self.stats["flags"]["cabin"] = False
-                        #the various interactions with the cabin owner
-                        if (self.player.real_x+self.player.rect.width > 3700
-                            and self.player.real_x+self.player.rect.width < 3950
-                            and self.stats["flags"]["cabin"] and not self.stats["flags"]["fished"]):
-                            self.stats["flags"]["bridge"] = True
-                            self.stats["inv"]= {"fishing_rod"}
-                        if (self.player.real_x+self.player.rect.width > 3700
-                            and self.player.real_x+self.player.rect.width < 3950
-                            and self.stats["flags"]["cabin"] and self.stats["flags"]["fished"]):
-                            self.stats["inv"]= {"key"}
-
-                        if (self.player.real_x+self.player.rect.width > 4000
-                            and self.player.real_x+self.player.rect.width <= 4104
-                            and not self.stats["flags"]["trash"]
-                            and "net" in self.stats["inv"]):
-                            self.stats["flags"]["trash"] = True
-                            self.stats["inv"]= {"money", "axe"}
-                        if (self.player.real_x+self.player.rect.width > 5480
-                            and self.player.real_x+self.player.rect.width < 5620
-                            and not self.stats["flags"]["fished"]
-                            and "fishing_rod" in self.stats["inv"]):
-                            #logic for fishing stance on ezer
-                            self.stats["flags"]["fished"] = True
-                            self.stats["inv"]= {"fishing_rod", "fish"}
-
-                        #purifier states
-                        if (self.player.real_x+self.player.rect.width > 6018
-                            and self.player.real_x+self.player.rect.width < 6296
-                            and not self.stats["flags"]["open"]
-                            and "key" in self.stats["inv"]):
-                            self.stats["flags"]["open"] = True
-                        elif (self.player.real_x+self.player.rect.width > 6018
-                            and self.player.real_x+self.player.rect.width < 6296
-                            and self.stats["flags"]["open"]):
-                            self.stats["flags"]["purifier"] = True
-                            self.stats["flags"]["purified"] = True
-
-                        if (self.player.real_x+self.player.rect.width > 7000
-                            and self.player.real_x+self.player.rect.width < 7316
-                            and not self.stats["flags"]["picked"]):
-                            self.stats["flags"]["picked"] = True
-                            self.stats["inv"]= {"glass"}
-
-                        #guard
-                        if (self.player.real_x+self.player.rect.width > 8900
-                            and self.player.real_x+self.player.rect.width < 9080
-                            and not self.stats["flags"]["glass"]
-                            and "glass" in self.stats["inv"]):
-                            self.stats["flags"]["glass"] = True
-                            self.stats["inv"]= {}
-                        if (self.player.real_x+self.player.rect.width > 9080
-                            and self.player.real_x+self.player.rect.width < 9200
-                            and self.stats["flags"]["glass"]):
-                            #something of a congrats modal here
+                        if self.current_slide == 36:
+                            if self.focus == "game":
+                                self.player.direction = "right"
+                                self.player.running_velocity = abs(self.player.running_velocity)
+                                self.player.velocity = abs(self.player.velocity)
+                            elif self.focus == "bar":
+                                if self.show_map_modal:
+                                    if self.hud["yes"].flag:
+                                        self.hud["yes"].flag = False
+                                        self.hud["no"].flag = True
+                                        self.hud["yes"].on_focus(self.screen)
+                                        self.hud["no"].on_focus(self.screen)
+                                else:
+                                    if self.hud["map_icon"].flag:
+                                        self.hud["map_icon"].flag = False
+                                        self.hud["bird_icon"].flag = True
+                                        self.hud["map_icon"].on_focus(self.screen)
+                                        self.hud["bird_icon"].on_focus(self.screen)
+                        elif ((self.current_slide < 4)
+                              or (6 < self.current_slide <11)
+                              or (14 < self.current_slide < 18)
+                              or (18 < self.current_slide <22)
+                              or (24 < self.current_slide < 27)
+                              or self.current_slide == 28
+                              or 30 < self.current_slide < 33):
+                            self.next.on_press(self.screen)
+                            self.current_slide +=1
+                        elif ((3 < self.current_slide < 7)
+                              or self.current_slide == 11
+                              or (12 < self.current_slide < 15)
+                              or self.current_slide == 18
+                              or self.current_slide == 22
+                              or (22 < self.current_slide < 25)
+                              or self.current_slide == 27
+                              or self.current_slide == 29
+                              or self.current_slide == 30
+                              or self.current_slide == 33
+                              or self.current_slide == 35):
+                            self.next.on_press(self.screen)
+                            self.current_slide = 36
+                        elif self.current_slide == 34:
                             running = False
                             utils.loading_screen(self.screen)
                             #save here
                             if not self.slot["stages"]["rio"] is True:
                                 saves.save(6, "Rio Claro", "rio")
+                    elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
+                        if self.current_slide == 36 and self.focus == "game":
+                            self.player.direction = "down"
+                            self.player.y_velocity = abs(self.player.y_velocity)
+                    elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
+                        if self.current_slide == 36 and self.focus == "game":
+                            self.player.direction = "up"
+                            self.player.y_velocity = -abs(self.player.y_velocity)
+                    elif event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
+                        if self.current_slide == 36 and self.focus == "game":
+                            self.player.running = True
+                    elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
+                        if self.current_slide == 36:
+                            if self.focus == "game":
+                                if (self.player.real_x+self.player.rect.width > 500
+                                        and self.player.real_x+self.player.rect.width < 553
+                                        and not self.stats["flags"]["money"]):
+                                    self.stats["flags"]["money"] = True
+                                    self.stats["inv"] = {"money"}
+                                    self.current_slide = 5
+                                if (self.player.real_x+self.player.rect.width > 565
+                                    and self.player.real_x+self.player.rect.width < 685
+                                    and not self.stats["flags"]["net"]
+                                    and "money" in self.stats["inv"]):
+                                    self.stats["flags"]["net"] = True
+                                    self.stats["inv"] = {"money", "net"}
+                                    self.current_slide = 6
+                                if (self.player.real_x+self.player.rect.width > 2400
+                                    and self.player.real_x+self.player.rect.width < 2595
+                                    and "axe" in self.stats["inv"]):
+                                    self.current_slide = 15
+                                    self.stats["flags"]["logger"] = True
+                                    self.stats["inv"] = {"money", "wood"}
+                                elif (self.player.real_x+self.player.rect.width > 2400
+                                      and self.player.real_x+self.player.rect.width < 2595
+                                      and self.stats["flags"]["logger"] is False):
+                                    self.current_slide = 7
+                                if (self.player.real_x+self.player.rect.width > 3390
+                                    and self.player.real_x+self.player.rect.width < 3650
+                                    and self.stats["flags"]["logger"]):
+                                    self.stats["flags"]["cabin"] = True
+                                elif (self.player.real_x+self.player.rect.width > 3390
+                                    and self.player.real_x+self.player.rect.width < 3650
+                                    and self.stats["flags"]["cabin"]):
+                                    self.stats["flags"]["cabin"] = False
 
+                                #the various interactions with the cabin owner
+                                if (self.player.real_x+self.player.rect.width > 3700
+                                    and self.player.real_x+self.player.rect.width < 3950
+                                    and self.stats["flags"]["cabin"]
+                                    and not self.stats["flags"]["bridge"]
+                                    and not self.stats["flags"]["fished"]):
+                                    self.current_slide = 19
+                                    self.stats["flags"]["bridge"] = True
+                                    self.stats["inv"] = {"fishing_rod"}
+                                if (self.player.real_x+self.player.rect.width > 3700
+                                    and self.player.real_x+self.player.rect.width < 3950
+                                    and self.stats["flags"]["cabin"]
+                                    and self.stats["flags"]["fished"]
+                                    and not self.stats["flags"]["open"]
+                                    and "key" not in self.stats["inv"]):
+                                    self.current_slide = 25
+                                    self.stats["inv"] = {"key"}
+
+                                #trash state
+                                if (self.player.real_x+self.player.rect.width > 4000
+                                    and self.player.real_x+self.player.rect.width <= 4104
+                                    and not self.stats["flags"]["trash"]
+                                    and "net" in self.stats["inv"]):
+                                    self.current_slide = 14
+                                    self.stats["flags"]["trash"] = True
+                                    self.stats["inv"] = {"money", "axe"}
+                                elif (self.player.real_x+self.player.rect.width > 4000
+                                      and self.player.real_x+self.player.rect.width <= 4104
+                                      and not self.stats["flags"]["trash"]
+                                      and "net" not in self.stats["inv"]):
+                                    self.current_slide = 13
+
+                                #fishing states
+                                if (self.player.real_x+self.player.rect.width > 5480
+                                    and self.player.real_x+self.player.rect.width < 5620
+                                    and not self.stats["flags"]["fished"]
+                                    and "fishing_rod" in self.stats["inv"]):
+                                    self.current_slide = 24
+                                    self.stats["flags"]["fished"] = True
+                                    self.stats["inv"] = {"fishing_rod", "fish"}
+                                elif (self.player.real_x+self.player.rect.width > 5480
+                                    and self.player.real_x+self.player.rect.width < 5620
+                                    and not self.stats["flags"]["fished"]
+                                    and "fishing_rod" not in self.stats["inv"]):
+                                    self.current_slide = 23
+                                    self.stats["flags"]["fished"] = True
+                                    self.stats["inv"] = {"fishing_rod", "fish"}
+
+                                #purifier states
+                                if (self.player.real_x+self.player.rect.width > 6018
+                                    and self.player.real_x+self.player.rect.width < 6296
+                                    and not self.stats["flags"]["open"]
+                                    and "key" in self.stats["inv"]):
+                                    self.stats["flags"]["open"] = True
+                                elif (self.player.real_x+self.player.rect.width > 6018
+                                    and self.player.real_x+self.player.rect.width < 6296
+                                    and self.stats["flags"]["open"]
+                                    and not self.stats["flags"]["purified"]):
+                                    self.current_slide = 28
+                                    self.stats["inv"] = {}
+                                    self.stats["flags"]["purifier"] = True
+                                    self.stats["flags"]["purified"] = True
+
+                                if (self.player.real_x+self.player.rect.width > 7000
+                                    and self.player.real_x+self.player.rect.width < 7316
+                                    and not self.stats["flags"]["picked"]):
+                                    self.current_slide = 35
+                                    self.stats["flags"]["picked"] = True
+                                    self.stats["inv"] = {"glass"}
+
+                                #guard
+                                if (self.player.real_x+self.player.rect.width > 8900
+                                    and self.player.real_x+self.player.rect.width < 9080
+                                    and not self.stats["flags"]["glass"]
+                                    and "glass" in self.stats["inv"]):
+                                    self.current_slide = 31
+                                    self.stats["flags"]["glass"] = True
+                                    self.stats["inv"] = {}
+                                elif (self.player.real_x+self.player.rect.width > 8900
+                                    and self.player.real_x+self.player.rect.width < 9080
+                                    and not self.stats["flags"]["glass"]
+                                    and "glass" not in self.stats["inv"]):
+                                    self.current_slide = 30
+                                if (self.player.real_x+self.player.rect.width > 9080
+                                    and self.player.real_x+self.player.rect.width < 9200
+                                    and self.stats["flags"]["glass"]):
+                                    self.current_slide = 34
+                            elif self.focus == "bar":
+                                if self.show_map_modal:
+                                    if self.hud["yes"].flag:
+                                        running = False
+                                    elif self.hud["no"].flag:
+                                        self.focus = "game"
+                                        self.show_bird_modal = False
+                                        self.show_map_modal = False
+                                else:
+                                    if self.hud["bird_icon"].flag:
+                                        self.show_bird_modal = True
+                                    elif self.hud["map_icon"].flag:
+                                        self.show_map_modal = True
 
 
                     elif event.key == pygame.K_ESCAPE or event.key == consts.K_CIRCLE:
-                        pass
-                        # move focus to upper menu bar
+                        if self.current_slide == 36:
+                            self.show_bird_modal = False
+                            self.show_map_modal = False
+                            if self.focus == "game":
+                                self.focus = "bar"
+                            elif self.focus == "bar":
+                                self.focus = "game"
+
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
                         self.player.direction = "stand"
@@ -380,7 +573,81 @@ class River:
                     elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
                         self.player.direction = "stand"
                     elif event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
-                         self.player.running = False
+                        self.player.running = False
+    def render_scene(self, number, rel_x):
+        if number == 36:
+            self.actors_load(rel_x)
+        elif number in (1, 28, 34) :
+            self.player.update()
+            self.screen.blit(self.icons["parrot"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif (1 < number < 4) or number == 27 or number == 29:
+            self.player.update()
+            self.screen.blit(self.icons["parrot"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.prev.base, (178, 703))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif number == 4:
+            self.player.update()
+            self.screen.blit(self.icons["ezer"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.prev.base, (178, 703))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif ((4 < number < 7)
+              or (12 < number < 15)
+              or (22 < number < 25)
+              or number == 35):
+            #ezer commenting on an item
+            self.player.update()
+            self.screen.blit(self.icons["ezer"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif number == 7: #logger initiating a conversation
+            self.player.update()
+            self.screen.blit(self.icons["logger"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif number in (8, 10, 17, 20, 22, 32):
+            self.player.update()
+            self.screen.blit(self.icons["ezer"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.prev.base, (178, 703))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif number in (9, 11, 16, 18):
+            self.player.update()
+            self.screen.blit(self.icons["logger"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.prev.base, (178, 703))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif number == 15: #ezer initiating a conversation
+            self.player.update()
+            self.screen.blit(self.icons["ezer"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif number in (19, 25):  #owner initiating a conversation
+            self.player.update()
+            self.screen.blit(self.icons["owner"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif number in (21, 26):
+            self.player.update()
+            self.screen.blit(self.icons["owner"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.prev.base, (178, 703))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif number in (30, 31):  #guard initiating a conversation
+            self.player.update()
+            self.screen.blit(self.icons["guard"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.next.base, (1104, 703))
+        elif number == 33:
+            self.player.update()
+            self.screen.blit(self.icons["guard"], (9, 654))
+            self.screen.blit(self.dialogue[str(number)], (139, 653))
+            self.screen.blit(self.prev.base, (178, 703))
+            self.screen.blit(self.next.base, (1104, 703))
+
 
     def actors_load(self, rel_x):
         if (self.player.real_x+self.player.rect.width > 500
@@ -393,44 +660,49 @@ class River:
             and "money" in self.stats["inv"]):
             self.prompts["net"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 2400
-            and self.player.real_x+self.player.rect.width < 2595):
+            and self.player.real_x+self.player.rect.width < 2595
+            and self.stats["flags"]["logger"] == False):
             self.prompts["logger"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 3390
             and self.player.real_x+self.player.rect.width < 3650
-            and self.stats["flags"]["logger"]):
+            and self.stats["flags"]["logger"]
+            and self.stats["flags"]["cabin"] == False):
             self.prompts["cabin"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 3700
             and self.player.real_x+self.player.rect.width < 3950
-            and self.stats["flags"]["cabin"]):
+            and self.stats["flags"]["cabin"]
+            and (self.stats["flags"]["bridge"] == False or
+                 ( self.stats["flags"]["fished"] and
+                   not self.stats["flags"]["open"] and
+                   "key" not in self.stats["inv"]))):
             self.prompts["owner"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 4000
             and self.player.real_x+self.player.rect.width <= 4104
-            and not self.stats["flags"]["trash"]
-            and "net" in self.stats["inv"]):
+            and not self.stats["flags"]["trash"]):
             self.prompts["trash"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 5480
             and self.player.real_x+self.player.rect.width < 5620
             and not self.stats["flags"]["fished"]):
-             self.prompts["fish"].float(rel_x)
+            self.prompts["fish"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 6018
             and self.player.real_x+self.player.rect.width < 6296
             and "key" in self.stats["inv"]):
-             self.prompts["purifier"].float(rel_x)
+            self.prompts["purifier"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 7000
             and self.player.real_x+self.player.rect.width < 7316
             and not self.stats["flags"]["picked"]):
-             self.prompts["glass"].float(rel_x)
+            self.prompts["glass"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 8900
             and self.player.real_x+self.player.rect.width < 9080
             and not self.stats["flags"]["glass"]):
-             self.prompts["guard"].float(rel_x)
+            self.prompts["guard"].float(rel_x)
         if (self.player.real_x+self.player.rect.width > 9080
             and self.player.real_x+self.player.rect.width < 9200
             and self.stats["flags"]["glass"]):
             self.prompts["guard"].float(rel_x)
         if 4090 < self.player.real_x < 4790:
             self.player.rect.y = 444
-        if 4790 < self.player.real_x  < 7500:
+        if 4790 < self.player.real_x < 7500:
             if self.player.rect.y > 500:
                 self.player.rect.y = 500
         if 8554 < self.player.real_x:
@@ -444,9 +716,10 @@ class River:
             if self.player.velocity > 0:
                 self.player.stage["x"] = -5632
                 self.player.real_x =  6158
-        print self.player.rect.y
-        print self.player.real_x
         self.player.update()
+        self.screen.blit(self.props["handrail"], (4236-abs(rel_x), 548))
+        if self.stats["flags"]["open"] is True:
+            self.screen.blit(self.props["cover"], (6297-abs(rel_x), 184))
 
     def load_items(self, rel_x):
         if self.stats["flags"]["money"] is False:
@@ -458,11 +731,22 @@ class River:
 
     def load_hud(self):
         #top icons
-        self.screen.blit(self.hud["bird_icon"], (1053, 15))
-        self.screen.blit(self.hud["counter"], (1082, 117))
-        text = self.font.render(str(self.slot["coins"]),True, (255,255,255))
-        self.screen.blit(text, (1130, 126))
-        self.screen.blit(self.hud["map_icon"], (903, 15))
+        self.screen.blit(self.hud["bird_icon"].end, (1053, 15))
+        # self.screen.blit(self.hud["counter"], (1082, 117))
+        # text = self.font.render(str(self.slot["coins"]),True, (255, 255, 255))
+        # self.screen.blit(text, (1130, 126))
+        self.screen.blit(self.hud["map_icon"].base, (903, 15))
+        if self.show_bird_modal:
+            if self.stats["flags"]["bridge"]:
+                self.screen.blit(self.hud["bird_modal_2"], (0, 0))
+            elif self.stats["flags"]["purified"]:
+                self.screen.blit(self.hud["bird_modal_3"], (0, 0))
+            else:
+                self.screen.blit(self.hud["bird_modal_1"], (0, 0))
+        if self.show_map_modal:
+            self.screen.blit(self.hud["map_modal"], (367, 191))
+            self.screen.blit(self.hud["yes"].base, (517, 429))
+            self.screen.blit(self.hud["no"].end, (656, 429))
         #inventory
         self.screen.blit(self.hud["bar"], (1, 800))
         if self.focus == "inventory":
