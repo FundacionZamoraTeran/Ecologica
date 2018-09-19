@@ -726,9 +726,6 @@ class Farm:
             and self.stats["flags"]["fixed"] is False
             and "tube" in self.stats["inv"]):
             self.prompts["seeder_pump"].float(rel_x)
-
-        print self.player.real_x
-        print self.player.rect.y
         self.player.update()
 
     def load_items(self, rel_x):
