@@ -10,7 +10,7 @@ class Player(pygame.sprite.Sprite):
     """
     def __init__(self, screen, clock, pos, character,
                  stage_width=1200, scrolls=False,
-                 physics=(28, 28, 38)):
+                 physics=(28, 28, 38), limit_y = 444 ):
         pygame.sprite.Sprite.__init__(self)
 
         self.screen = screen
@@ -27,6 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.velocity = physics[0]
         self.y_velocity = physics[1]
         self.running_velocity = physics[2]
+        self.limit_y = limit_y
 
         self.sprites = {
             "up": utils.load_image("up.png", self.character),
@@ -59,8 +60,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.rect.y+self.rect.height > 800: #taking into account the item bar
             self.rect.y = 800-self.rect.height
-        elif self.rect.y < 444: #this is based on an average of the levels
-            self.rect.y = 444
+        elif self.rect.y < self.limit_y: #this is based on an average of the levels
+            self.rect.y = self.limit_y
 
     def update(self):
         if self.direction == "right" or self.direction == "left":
