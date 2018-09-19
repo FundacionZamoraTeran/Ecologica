@@ -26,92 +26,104 @@ class Farm:
         self.character = "cesar"
         self.background = utils.load_image("background.png", "farm")
         self.background_width = self.background.get_size()[0]
-        self.current_slide = 29
+        self.current_slide = 1
         self.prompts = {
             "tools": Prompt(self.screen,
                             self.clock,
-                            (523, 480),
+                            (523, 400),
                             "prompt.png",
                             "",
-                            (400, 600)),
+                            (380, 500)),
             "valve": Prompt(self.screen,
                             self.clock,
-                            (601, 480),
+                            (1695, 350),
                             "prompt.png",
                             "",
-                            (400, 500)),
+                            (300, 400)),
             "house": Prompt(self.screen,
                             self.clock,
-                            (2445, 380),
+                            (1718, 420),
                             "prompt.png",
                             "",
-                            (250, 400)),
+                            (350, 480)),
             "farmer": Prompt(self.screen,
                              self.clock,
-                             (3470, 480),
+                             (1934, 350),
                              "prompt.png",
                              "",
-                             (400, 600)),
+                             (300, 400)),
             "barn": Prompt(self.screen,
                            self.clock,
-                           (3740, 380),
+                           (3800, 420),
+                           "prompt.png",
+                           "",
+                           (350, 480)),
+            "dog":  Prompt(self.screen,
+                           self.clock,
+                           (3896, 300),
                            "prompt.png",
                            "",
                            (250, 400)),
-            "dog":  Prompt(self.screen,
-                           self.clock,
-                           (4383, 580),
-                           "prompt.png",
-                           "",
-                           (500, 680)),
             "fabric":  Prompt(self.screen,
                               self.clock,
-                              (5539, 480),
+                              (4086, 480),
                               "prompt.png",
                               "",
                               (400, 600)),
-            "purifier":  Prompt(self.screen,
-                                self.clock,
-                                (6130, 480),
-                                "prompt.png",
-                                "",
-                                (400, 600)),
             "system":  Prompt(self.screen,
                               self.clock,
-                              (7132, 380),
+                              (5721, 380),
                               "prompt.png",
                               "",
-                              (350, 450)),
+                              (350, 500)),
             "plant":  Prompt(self.screen,
                              self.clock,
-                             (8950, 380),
+                             (5850, 380),
                              "prompt.png",
                              "",
                              (350, 450)),
             "greenhouse": Prompt(self.screen,
                                  self.clock,
-                                 (9062, 480),
+                                 (7092, 480),
+                                 "prompt.png",
+                                 "",
+                                 (400, 600)),
+            "repair": Prompt(self.screen,
+                                 self.clock,
+                                 (6840, 480),
                                  "prompt.png",
                                  "",
                                  (400, 600)),
             "tube": Prompt(self.screen,
                            self.clock,
-                           (9062, 480),
+                           (6980, 420),
                            "prompt.png",
                            "",
-                           (400, 600)),
+                           (400, 500)),
             "hole": Prompt(self.screen,
                            self.clock,
-                           (9062, 480),
+                           (7680, 420),
                            "prompt.png",
                            "",
-                           (400, 600)),
-            "other": Prompt(self.screen,
+                           (380, 530)),
+            "cabbage": Prompt(self.screen,
+                           self.clock,
+                           (7940, 420),
+                           "prompt.png",
+                           "",
+                           (380, 530)),
+            "seeder_pump": Prompt(self.screen,
+                           self.clock,
+                           (8304, 420),
+                           "prompt.png",
+                           "",
+                           (380, 530)),
+            "special": Prompt(self.screen,
                             self.clock,
-                            (9062, 480),
+                              (4055, 380),
                             "prompt.png",
                             "",
-                            (400, 600))
+                            (350, 450))
         }
         self.props = {
             "tools": utils.load_image("tools.png", "farm"),
@@ -218,6 +230,7 @@ class Farm:
                 "tube": False, # the item is visible on map
                 "planted": False, # hole is visible
                 "fixed": False, # seeder pump is not repaired
+                "cabbage": False, # does not have the item
                 "good_dog": False #dog is not eating its food
             }
         }
@@ -337,12 +350,12 @@ class Farm:
                         self.screen.blit(self.props["seeds"][2], (7650-abs(rel_x), 552))
                         self.screen.blit(self.props["plant"], (7650-abs(rel_x), 502))
                         self.screen.blit(self.props["seeds"][1], (7763-abs(rel_x), 549))
-                        self.screen.blit(self.props["sprinklers"][1], (7759-abs(rel_x), 640))
+                        self.screen.blit(self.props["sprinklers"][1], (7680-abs(rel_x), 563))
                         self.screen.blit(self.props["broken"][1], (8216-abs(rel_x), 530))
                     else:
                         self.screen.blit(self.props["seeds"][2], (7650-abs(rel_x), 552))
                         self.screen.blit(self.props["seeds"][0], (7763-abs(rel_x), 549))
-                        self.screen.blit(self.props["sprinklers"][1], (7759-abs(rel_x), 640))
+                        self.screen.blit(self.props["sprinklers"][1], (7680-abs(rel_x), 563))
                         self.screen.blit(self.props["broken"][1], (8216-abs(rel_x), 530))
                 else:
                     if self.stats["flags"]["planted"] is True:
@@ -356,36 +369,6 @@ class Farm:
                         self.screen.blit(self.props["seeds"][0], (7763-abs(rel_x), 549))
                         self.screen.blit(self.props["sprinklers"][0], (7759-abs(rel_x), 640))
                         self.screen.blit(self.props["broken"][0], (8216-abs(rel_x), 530))
-                # else:
-                #     self.screen.blit(self.props["logger"][0], (2415-abs(rel_x), 405))
-                #     self.screen.blit(self.props["cabin"][0], (3240-abs(rel_x), 220))
-                # if self.stats["flags"]["bridge"] is True:
-                #     self.screen.blit(self.props["bridge"][1], (4104-abs(rel_x), 482))
-                # else:
-                #     self.screen.blit(self.props["bridge"][0], (4104-abs(rel_x), 482))
-                # if self.stats["flags"]["trash"] is False:
-                #     self.screen.blit(self.props["trash"], (4333-abs(rel_x), 678))
-                # self.screen.blit(self.props["canoe"], (4678-abs(rel_x), 650))
-                # self.screen.blit(self.props["trees"][0], (4673-abs(rel_x), -100))
-                # if self.stats["flags"]["fished"] is False:
-                #     self.screen.blit(self.props["fish"], (5539-abs(rel_x), 690))
-                # self.screen.blit(self.props["trees"][1], (5863-abs(rel_x), -100))
-                # if self.stats["flags"]["open"] is True:
-                #     if self.stats["flags"]["purifier"] is True:
-                #         self.screen.blit(self.props["purifier"][2], (6079-abs(rel_x), 183))
-                #     else:
-                #         self.screen.blit(self.props["purifier"][1], (6079-abs(rel_x), 183))
-                # else:
-                #     self.screen.blit(self.props["purifier"][0], (6079-abs(rel_x), 183))
-                # self.screen.blit(self.props["trees"][2], (7347-abs(rel_x), -100))
-                # if self.stats["flags"]["glass"] is True:
-                #     self.screen.blit(self.props["fence"][1], (8209-abs(rel_x), 398))
-                #     self.screen.blit(self.props["special"], (8815-abs(rel_x), 326))
-                #     self.screen.blit(self.props["guard"], (8820-abs(rel_x), 501))
-                # else:
-                #     self.screen.blit(self.props["fence"][0], (8209-abs(rel_x), 398))
-                #     self.screen.blit(self.props["special"], (8815-abs(rel_x), 326))
-                #     self.screen.blit(self.props["guard"], (8920-abs(rel_x), 501))
                 self.load_items(abs(rel_x))
                 self.render_scene(self.current_slide, abs(rel_x))
                 self.load_hud()
@@ -417,11 +400,8 @@ class Farm:
                                         self.hud["map_icon"].flag = True
                                         self.hud["bird_icon"].on_focus(self.screen)
                                         self.hud["map_icon"].on_focus(self.screen)
-                        elif ((1 < self.current_slide < 5)
-                              or (7 < self.current_slide < 12)
-                              or (15 < self.current_slide < 19)
-                              or (19 < self.current_slide < 23)
-                              or 25 < self.current_slide < 28):
+                        elif ((1 < self.current_slide < 4)
+                              or self.current_slide in (7, 8,  9, 10, 26, 27)):
                             self.prev.on_press(self.screen)
                             self.current_slide -= 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
@@ -443,20 +423,12 @@ class Farm:
                                         self.hud["bird_icon"].flag = True
                                         self.hud["map_icon"].on_focus(self.screen)
                                         self.hud["bird_icon"].on_focus(self.screen)
-                        elif ((self.current_slide < 4)
-                              or (6 < self.current_slide < 11)
-                              or (14 < self.current_slide < 18)
-                              or (18 < self.current_slide < 22)
-                              or (24 < self.current_slide < 27)):
+                        elif ((self.current_slide < 3)
+                              or self.current_slide in (6, 7, 8, 9, 25, 26)):
                             self.next.on_press(self.screen)
                             self.current_slide +=1
-                        elif ((3 < self.current_slide < 7)
-                              or self.current_slide == 11
-                              or (12 < self.current_slide < 15)
-                              or self.current_slide == 18
-                              or self.current_slide == 22
-                              or (22 < self.current_slide < 25)
-                              or self.current_slide == 27):
+                        elif ((10 < self.current_slide < 25)
+                              or self.current_slide in (3, 4, 5, 10, 27)):
                             self.next.on_press(self.screen)
                             self.current_slide = 29
                         elif self.current_slide == 28:
@@ -479,126 +451,122 @@ class Farm:
                     elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
                         if self.current_slide == 29:
                             if self.focus == "game":
-                                pass
-                                # if (self.player.real_x+self.player.rect.width > 500
-                                #         and self.player.real_x+self.player.rect.width < 553
-                                #         and not self.stats["flags"]["tools"]):
-                                #     self.stats["flags"]["tools"] = True
-                                #     self.stats["inv"] = {"tools"}
-                                #     self.current_slide = 5
-                                # if (self.player.real_x+self.player.rect.width > 565
-                                #     and self.player.real_x+self.player.rect.width < 685
-                                #     and not self.stats["flags"]["valve"]
-                                #     and "tools" in self.stats["inv"]):
-                                #     self.stats["flags"]["valve"] = True
-                                #     self.stats["inv"] = {"tools", "valve"}
-                                #     self.current_slide = 6
-                                # if (self.player.real_x+self.player.rect.width > 2400
-                                #     and self.player.real_x+self.player.rect.width < 2595
-                                #     and "axe" in self.stats["inv"]):
-                                #     self.current_slide = 15
-                                #     self.stats["flags"]["logger"] = True
-                                #     self.stats["inv"] = {"tools", "wood"}
-                                # elif (self.player.real_x+self.player.rect.width > 2400
-                                #       and self.player.real_x+self.player.rect.width < 2595
-                                #       and self.stats["flags"]["logger"] is False):
-                                #     self.current_slide = 7
-                                # if (self.player.real_x+self.player.rect.width > 3390
-                                #     and self.player.real_x+self.player.rect.width < 3650
-                                #     and self.stats["flags"]["logger"]):
-                                #     self.stats["flags"]["cabin"] = True
-                                # elif (self.player.real_x+self.player.rect.width > 3390
-                                #     and self.player.real_x+self.player.rect.width < 3650
-                                #     and self.stats["flags"]["cabin"]):
-                                #     self.stats["flags"]["cabin"] = False
+                                if (396 < self.player.real_x < 676
+                                    and not self.stats["flags"]["tools"]):
+                                    self.stats["flags"]["tools"] = True
+                                    self.stats["inv"] = {"tools"}
+                                    self.current_slide = 4
+                                #house interactions
+                                if (1606 <self.player.real_x < 1802
+                                    and self.stats["flags"]["house"] is False):
+                                    self.stats["flags"]["house"] = True
+                                    self.current_slide = 5
+                                elif (1610 < self.player.real_x < 1722
+                                    and not self.stats["flags"]["valve"]
+                                    and self.stats["flags"]["house"] == True
+                                    and "tools" in self.stats["inv"]):
+                                    self.stats["flags"]["valve"] = True
+                                    self.stats["inv"] = {"tools", "valve"}
+                                    self.current_slide = 11
+                                elif ( 1836 <self.player.real_x < 2006
+                                       and self.stats["flags"]["house"] == True
+                                       and self.stats["flags"]["farmer"] is False
+                                       and "cabbage" not in self.stats["inv"]):
+                                    self.current_slide = 6
+                                elif ( 1838 <self.player.real_x < 2006
+                                     and self.stats["flags"]["house"] == True
+                                     and "cabbage" in self.stats["inv"]) :
+                                    self.stats["inv"] = {"dogfood"}
+                                    self.current_slide = 25
 
-                                # #the various interactions with the cabin owner
-                                # if (self.player.real_x+self.player.rect.width > 3700
-                                #     and self.player.real_x+self.player.rect.width < 3950
-                                #     and self.stats["flags"]["cabin"]
-                                #     and not self.stats["flags"]["bridge"]
-                                #     and not self.stats["flags"]["fished"]):
-                                #     self.current_slide = 19
-                                #     self.stats["flags"]["bridge"] = True
-                                #     self.stats["inv"] = {"fishing_rod"}
-                                # if (self.player.real_x+self.player.rect.width > 3700
-                                #     and self.player.real_x+self.player.rect.width < 3950
-                                #     and self.stats["flags"]["cabin"]
-                                #     and self.stats["flags"]["fished"]
-                                #     and not self.stats["flags"]["open"]
-                                #     and "key" not in self.stats["inv"]):
-                                #     self.current_slide = 25
-                                #     self.stats["inv"] = {"key"}
+                                #barn interactions
+                                if (3628 < self.player.real_x< 3908
+                                    and self.stats["flags"]["barn"] is False):
+                                    self.stats["flags"]["barn"] = True
+                                    self.current_slide = 15
+                                elif (443 < self.player.rect.y < 480
+                                      and 3616 < self.player.real_x < 3701
+                                      and self.stats["flags"]["good_dog"] is False
+                                      and self.stats["flags"]["dog"] is False
+                                      and self.stats["flags"]["barn"] == True):
+                                    self.stats["flags"]["dog"] = True
+                                    self.current_slide = 16
+                                elif (443 < self.player.rect.y < 480
+                                      and 3616 < self.player.real_x < 3701
+                                      and self.stats["flags"]["good_dog"] is False
+                                      and "dogfood" in self.stats["inv"]
+                                      and self.stats["flags"]["barn"] == True):
+                                    self.stats["flags"]["good_dog"] = True
+                                    self.stats["inv"] = {}
+                                if (443 < self.player.rect.y < 480
+                                    and 3916 < self.player.real_x < 4158
+                                    and self.stats["flags"]["good_dog"] == True
+                                    and self.stats["flags"]["barn"] == True):
+                                    self.current_slide = 28
 
-                                # #trash state
-                                # if (self.player.real_x+self.player.rect.width > 4000
-                                #     and self.player.real_x+self.player.rect.width <= 4104
-                                #     and not self.stats["flags"]["trash"]
-                                #     and "valve" in self.stats["inv"]):
-                                #     self.current_slide = 14
-                                #     self.stats["flags"]["trash"] = True
-                                #     self.stats["inv"] = {"tools", "axe"}
-                                # elif (self.player.real_x+self.player.rect.width > 4000
-                                #       and self.player.real_x+self.player.rect.width <= 4104
-                                #       and not self.stats["flags"]["trash"]
-                                #       and "valve" not in self.stats["inv"]):
-                                #     self.current_slide = 13
+                                #fabric/plastic
+                                if (3964 < self.player.real_x< 4216
+                                    and {"tools", "valve"} == self.stats["inv"]
+                                    and self.stats["flags"]["fabric"] is False):
+                                    self.stats["flags"]["fabric"] = True
+                                    self.stats["inv"] = {"tools", "valve", "fabric"}
+                                    self.current_slide = 12
 
-                                # #fishing states
-                                # if (self.player.real_x+self.player.rect.width > 5480
-                                #     and self.player.real_x+self.player.rect.width < 5620
-                                #     and not self.stats["flags"]["fished"]
-                                #     and "fishing_rod" in self.stats["inv"]):
-                                #     self.current_slide = 24
-                                #     self.stats["flags"]["fished"] = True
-                                #     self.stats["inv"] = {"fishing_rod", "fish"}
-                                # elif (self.player.real_x+self.player.rect.width > 5480
-                                #     and self.player.real_x+self.player.rect.width < 5620
-                                #     and not self.stats["flags"]["fished"]
-                                #     and "fishing_rod" not in self.stats["inv"]):
-                                #     self.current_slide = 23
-                                #     self.stats["flags"]["fished"] = True
-                                #     self.stats["inv"] = {"fishing_rod", "fish"}
+                                #pump and plant
+                                if (5632 < self.player.real_x< 5772
+                                    and "valve" in self.stats["inv"]
+                                    and self.stats["flags"]["pump"] is False):
+                                    self.stats["flags"]["pump"] = True
+                                    self.stats["inv"] = {"tools", "fabric"}
+                                    self.current_slide = 14
+                                if (5771 < self.player.real_x< 5912
+                                    and {"tools", "fabric"} == self.stats["inv"]
+                                    and self.stats["flags"]["pump"] == True
+                                    and self.stats["flags"]["plant"] is False):
+                                    self.stats["flags"]["plant"] = True
+                                    self.stats["inv"] = {"tools", "fabric", "plant"}
+                                    self.current_slide = 17
 
-                                # #purifier states
-                                # if (self.player.real_x+self.player.rect.width > 6018
-                                #     and self.player.real_x+self.player.rect.width < 6296
-                                #     and not self.stats["flags"]["open"]
-                                #     and "key" in self.stats["inv"]):
-                                #     self.stats["flags"]["open"] = True
-                                # elif (self.player.real_x+self.player.rect.width > 6018
-                                #     and self.player.real_x+self.player.rect.width < 6296
-                                #     and self.stats["flags"]["open"]
-                                #     and not self.stats["flags"]["purified"]):
-                                #     self.current_slide = 28
-                                #     self.stats["inv"] = {}
-                                #     self.stats["flags"]["purifier"] = True
-                                #     self.stats["flags"]["purified"] = True
+                                #greenhouse interactions
+                                if (6924 <self.player.real_x < 7232
+                                    and self.stats["flags"]["greenhouse"] is False):
+                                    self.stats["flags"]["greenhouse"] = True
+                                    self.current_slide = 18
+                                if (6784 <self.player.real_x < 6952
+                                    and self.stats["flags"]["greenhouse"]
+                                    and "fabric" in self.stats["inv"]):
+                                    self.stats["flags"]["repaired"] = True
+                                    self.stats["inv"] = {"tools", "plant"}
+                                    self.current_slide = 19
+                                if (6951 <self.player.real_x < 7037
+                                    and self.stats["flags"]["greenhouse"]
+                                    and {"tools", "plant"} ==self.stats["inv"]):
+                                    self.stats["flags"]["tube"] = True
+                                    self.stats["inv"] = {"tools", "plant", "tube"}
+                                    self.current_slide = 20
 
-                                # if (self.player.real_x+self.player.rect.width > 7000
-                                #     and self.player.real_x+self.player.rect.width < 7316
-                                #     and not self.stats["flags"]["picked"]):
-                                #     self.current_slide = 35
-                                #     self.stats["flags"]["picked"] = True
-                                #     self.stats["inv"] = {"glass"}
+                                #seeder lot interactions
+                                if (7596 <self.player.real_x < 7764
+                                    and self.stats["flags"]["planted"] is False
+                                    and "plant" in self.stats["inv"]):
+                                    self.stats["flags"]["planted"] = True
+                                    self.stats["inv"].remove("tools")
+                                    self.stats["inv"].remove("plant")
+                                    self.current_slide = 22
+                                if (7763 <self.player.real_x < 8164
+                                    and self.stats["flags"]["planted"]
+                                    and self.stats["flags"]["cabbage"] is False
+                                    and self.stats["flags"]["fixed"]):
+                                    self.stats["flags"]["cabbage"] = True
+                                    self.stats["inv"] = {"cabbage"}
+                                    self.current_slide = 24
+                                if (8163 <self.player.real_x < 8416
+                                    and self.stats["flags"]["fixed"] is False
+                                    and "tube" in self.stats["inv"]):
+                                    self.stats["flags"]["fixed"] = True
+                                    self.stats["inv"].remove("tube")
+                                    self.current_slide = 21
 
-                                # #guard
-                                # if (self.player.real_x+self.player.rect.width > 8900
-                                #     and self.player.real_x+self.player.rect.width < 9080
-                                #     and not self.stats["flags"]["glass"]
-                                #     and "glass" in self.stats["inv"]):
-                                #     self.current_slide = 31
-                                #     self.stats["flags"]["glass"] = True
-                                #     self.stats["inv"] = {}
-                                # elif (self.player.real_x+self.player.rect.width > 8900
-                                #     and self.player.real_x+self.player.rect.width < 9080
-                                #     and not self.stats["flags"]["glass"]
-                                #     and "glass" not in self.stats["inv"]):
-                                #     self.current_slide = 30
-                                # if (self.player.real_x+self.player.rect.width > 9080
-                                #     and self.player.real_x+self.player.rect.width < 9200
-                                #     and self.stats["flags"]["glass"]):
-                                #     self.current_slide = 34
                             elif self.focus == "bar":
                                 if self.show_map_modal:
                                     if self.hud["yes"].flag:
@@ -634,64 +602,42 @@ class Farm:
                         self.player.direction = "stand"
                     elif event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
                         self.player.running = False
+
     def render_scene(self, number, rel_x):
         if number == 29:
             self.actors_load(rel_x)
-        elif number in (1, 28, 34):
+        elif number in (1, 28):
             self.player.update()
             self.screen.blit(self.icons["rooster"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
-        elif (1 < number < 4) or number == 27:
+        elif number == 2:
             self.player.update()
             self.screen.blit(self.icons["rooster"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
-        elif number == 4:
+        elif number in (3, 7, 9, 26):
             self.player.update()
             self.screen.blit(self.icons["cesar"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
-        elif ((4 < number < 7)
-              or (12 < number < 15)
-              or (22 < number < 25)):
+        elif ((3 < number < 6)
+              or (10 < number < 25)):
             #cesar commenting on an item
             self.player.update()
             self.screen.blit(self.icons["cesar"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
-        elif number == 7: #logger initiating a conversation
+        elif number in (6, 25): #farmer initiating a conversation
             self.player.update()
-            self.screen.blit(self.icons["logger"], (9, 654))
+            self.screen.blit(self.icons["farmer"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
-        elif number in (8, 10, 17, 20, 22, 32):
+        elif number in (8, 10, 27):
             self.player.update()
-            self.screen.blit(self.icons["cesar"], (9, 654))
-            self.screen.blit(self.dialogue[str(number)], (139, 653))
-            self.screen.blit(self.prev.base, (178, 703))
-            self.screen.blit(self.next.base, (1104, 703))
-        elif number in (9, 11, 16, 18):
-            self.player.update()
-            self.screen.blit(self.icons["logger"], (9, 654))
-            self.screen.blit(self.dialogue[str(number)], (139, 653))
-            self.screen.blit(self.prev.base, (178, 703))
-            self.screen.blit(self.next.base, (1104, 703))
-        elif number == 15: #cesar initiating a conversation
-            self.player.update()
-            self.screen.blit(self.icons["cesar"], (9, 654))
-            self.screen.blit(self.dialogue[str(number)], (139, 653))
-            self.screen.blit(self.next.base, (1104, 703))
-        elif number in (19, 25):  #owner initiating a conversation
-            self.player.update()
-            self.screen.blit(self.icons["owner"], (9, 654))
-            self.screen.blit(self.dialogue[str(number)], (139, 653))
-            self.screen.blit(self.next.base, (1104, 703))
-        elif number in (21, 26):
-            self.player.update()
-            self.screen.blit(self.icons["owner"], (9, 654))
+            self.screen.blit(self.icons["farmer"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
@@ -699,68 +645,88 @@ class Farm:
 
 
     def actors_load(self, rel_x):
-        # if (self.player.real_x+self.player.rect.width > 500
-        #     and self.player.real_x+self.player.rect.width < 553
-        #     and not self.stats["flags"]["tools"]):
-        #     self.prompts["tools"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 565
-        #     and self.player.real_x+self.player.rect.width < 685
-        #     and not self.stats["flags"]["valve"]
-        #     and "tools" in self.stats["inv"]):
-        #     self.prompts["valve"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 2400
-        #     and self.player.real_x+self.player.rect.width < 2595
-        #     and self.stats["flags"]["logger"] == False):
-        #     self.prompts["logger"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 3390
-        #     and self.player.real_x+self.player.rect.width < 3650
-        #     and self.stats["flags"]["logger"]
-        #     and self.stats["flags"]["cabin"] == False):
-        #     self.prompts["cabin"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 3700
-        #     and self.player.real_x+self.player.rect.width < 3950
-        #     and self.stats["flags"]["cabin"]
-        #     and (self.stats["flags"]["bridge"] == False or
-        #          ( self.stats["flags"]["fished"] and
-        #            not self.stats["flags"]["open"] and
-        #            "key" not in self.stats["inv"]))):
-        #     self.prompts["owner"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 4000
-        #     and self.player.real_x+self.player.rect.width <= 4104
-        #     and not self.stats["flags"]["trash"]):
-        #     self.prompts["trash"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 5480
-        #     and self.player.real_x+self.player.rect.width < 5620
-        #     and not self.stats["flags"]["fished"]):
-        #     self.prompts["fish"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 6018
-        #     and self.player.real_x+self.player.rect.width < 6296
-        #     and "key" in self.stats["inv"]):
-        #     self.prompts["purifier"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 7000
-        #     and self.player.real_x+self.player.rect.width < 7316
-        #     and not self.stats["flags"]["picked"]):
-        #     self.prompts["glass"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 8900
-        #     and self.player.real_x+self.player.rect.width < 9080
-        #     and not self.stats["flags"]["glass"]):
-        #     self.prompts["guard"].float(rel_x)
-        # if (self.player.real_x+self.player.rect.width > 9080
-        #     and self.player.real_x+self.player.rect.width < 9200
-        #     and self.stats["flags"]["glass"]):
-        #     self.prompts["guard"].float(rel_x)
-        # if 4090 < self.player.real_x < 4790:
-        #     self.player.rect.y = 444
-        # if 4790 < self.player.real_x < 7500:
-        #     if self.player.rect.y > 500:
-        #         self.player.rect.y = 500
-        # if 8554 < self.player.real_x:
-        #     if self.player.rect.y < 492:
-        #         self.player.rect.y = 492
-        # if self.player.real_x+self.player.rect.width > 4004 and self.stats["flags"]["bridge"] is False:
-        #     if self.player.velocity > 0:
-        #         self.player.stage["x"] = -3340
-        #         self.player.real_x =  4004 -self.player.rect.width
+        if (396 < self.player.real_x < 676
+            and not self.stats["flags"]["tools"]):
+            self.prompts["tools"].float(rel_x)
+        if (1610 <self.player.real_x < 1722
+            and not self.stats["flags"]["valve"]
+            and self.stats["flags"]["house"] == True
+            and "tools" in self.stats["inv"]):
+            self.prompts["valve"].float(rel_x)
+        if (1606 <self.player.real_x < 1802
+            and self.stats["flags"]["house"] is False):
+            self.prompts["house"].float(rel_x)
+        if ( 1836 <self.player.real_x < 2006
+            and self.stats["flags"]["house"] == True
+            and (self.stats["flags"]["farmer"] is False
+                 or self.stats["flags"]["cabbage"] == True)):
+            self.prompts["farmer"].float(rel_x)
+        if (3628 < self.player.real_x< 3908
+            and self.stats["flags"]["barn"] is False):
+            self.prompts["barn"].float(rel_x)
+        if (443 < self.player.rect.y < 480
+            and 3616 < self.player.real_x < 3701
+            and self.stats["flags"]["good_dog"] is False
+            and (self.stats["flags"]["dog"] is False
+                 or "dogfood" in self.stats["inv"])
+            and self.stats["flags"]["barn"] == True):
+            self.prompts["dog"].float(rel_x)
+        if (443 < self.player.rect.y < 480
+            and 3916 < self.player.real_x < 4158
+            and self.stats["flags"]["good_dog"] == True
+            and self.stats["flags"]["barn"] == True):
+            self.prompts["special"].float(rel_x)
+        if (443 < self.player.rect.y < 480
+            and 3430 < self.player.real_x < 4158
+            and self.stats["flags"]["good_dog"] is False
+            and self.stats["flags"]["barn"] == True):
+            if 3672 < self.player.real_x < 3711:
+                if self.player.velocity > 0:
+                    self.player.rect.y = 450
+                    self.player.stage["x"] = -3108
+                    self.player.real_x =  3700
+            elif self.player.real_x > 3711:
+                self.player.rect.y = 556
+
+        if (3964 < self.player.real_x< 4216
+            and {"tools", "valve"} == self.stats["inv"]
+            and self.stats["flags"]["fabric"] is False):
+            self.prompts["fabric"].float(rel_x)
+        if (5632 < self.player.real_x< 5772
+            and "valve" in self.stats["inv"]
+            and self.stats["flags"]["pump"] is False):
+            self.prompts["system"].float(rel_x)
+        if (5771 < self.player.real_x< 5912
+            and {"tools", "fabric"} == self.stats["inv"]
+            and self.stats["flags"]["pump"] == True
+            and self.stats["flags"]["plant"] is False):
+            self.prompts["plant"].float(rel_x)
+
+        if (6924 <self.player.real_x < 7232
+            and self.stats["flags"]["greenhouse"] is False):
+            self.prompts["greenhouse"].float(rel_x)
+        if (6784 <self.player.real_x < 6952
+            and self.stats["flags"]["greenhouse"]
+            and "fabric" in self.stats["inv"]):
+            self.prompts["repair"].float(rel_x)
+        if (6951 <self.player.real_x < 7037
+            and self.stats["flags"]["greenhouse"]
+            and {"tools", "plant"} ==self.stats["inv"]):
+            self.prompts["tube"].float(rel_x)
+        if (7596 <self.player.real_x < 7764
+            and self.stats["flags"]["planted"] is False
+            and "plant" in self.stats["inv"]):
+            self.prompts["hole"].float(rel_x)
+        if (7763 <self.player.real_x < 8164
+            and self.stats["flags"]["planted"]
+            and self.stats["flags"]["cabbage"] is False
+            and self.stats["flags"]["fixed"]):
+            self.prompts["cabbage"].float(rel_x)
+        if (8163 <self.player.real_x < 8416
+            and self.stats["flags"]["fixed"] is False
+            and "tube" in self.stats["inv"]):
+            self.prompts["seeder_pump"].float(rel_x)
+
         print self.player.real_x
         print self.player.rect.y
         self.player.update()
@@ -778,6 +744,8 @@ class Farm:
         if (self.stats["flags"]["tube"] is False and
             self.stats["flags"]["greenhouse"] is True):
             self.screen.blit(self.props["tube"], (6953-rel_x, 532))
+        if self.stats["flags"]["good_dog"] is True:
+            self.screen.blit(self.props["special"], (4033-rel_x, 465))
 
     def load_hud(self):
         #top icons
@@ -801,6 +769,8 @@ class Farm:
         self.screen.blit(self.inventory["focused_bag"], (9, 805))
         if self.stats["inv"] == {"tools"}:
             self.screen.blit(self.inventory["tools"], (275, 813))
+        elif self.stats["inv"] == {"valve"}:
+            self.screen.blit(self.inventory["valve"], (275, 813))
         elif self.stats["inv"] == {"tools", "valve"}:
             self.screen.blit(self.inventory["tools"], (275, 813))
             self.screen.blit(self.inventory["valve"], (425, 823))
