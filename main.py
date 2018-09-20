@@ -5,9 +5,14 @@ import pygame
 from pygame.locals import *
 from scenarios.utils import consts
 from scenarios.menu import menu
-from scenarios.map import mapp
 from scenarios.intro import intro
+from scenarios.map import mapp
+from scenarios.farm import farm
+from scenarios.farm2 import farm2
+from scenarios.school import school
 from scenarios.river import river
+from scenarios.forest import forest
+from scenarios.end import end
 
 pygame.mixer.pre_init(44100, -16, 4, 2048)
 pygame.mixer.init()
@@ -26,13 +31,13 @@ class Eco:
         self.levels = {
             "0": intro.Intro,
             "m": mapp.Map,
-            "1": "school.School",
+            "1": school.School,
             "2": "city.City",
-            "3": "farm2.Farm",
-            "4": "farm.Farm",
+            "3": farm2.Farm,
+            "4": farm.Farm,
             "5": river.River,
-            "6": "forest.Forest",
-            "7": "end.End"
+            "6": forest.Forest,
+            "7": end.End
         }
 
     def reset_clock(self):

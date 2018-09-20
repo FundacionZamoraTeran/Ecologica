@@ -7,7 +7,12 @@ from scenarios.utils import consts
 from scenarios.menu import menu
 from scenarios.map import mapp
 from scenarios.intro import intro
+from scenarios.farm import farm
+from scenarios.farm2 import farm2
+from scenarios.school import school
 from scenarios.river import river
+from scenarios.forest import forest
+from scenarios.end import end
 
 pygame.mixer.pre_init(44100, -16, 4, 2048)
 pygame.mixer.init()
@@ -27,13 +32,13 @@ class Eco:
         self.levels = {
             "0": intro.Intro,
             "m": mapp.Map,
-            "1": "school.School",
+            "1": school.School,
             "2": "city.City",
-            "3": "farm2.Farm",
-            "4": "farm.Farm",
+            "3": farm2.Farm,
+            "4": farm.Farm,
             "5": river.River,
-            "6": "forest.Forest",
-            "7": "end.End"
+            "6": forest.Forest,
+            "7": end.End
         }
 
     def reset_clock(self):
@@ -51,14 +56,13 @@ class Eco:
         del meny
         while self.next_level is not None:
             self.level_selector(self.next_level)
-        #self.level_selector(0)
+        #self.level_selector(7)
 
         pygame.quit()
         sys.exit(0)
 
     def level_selector(self, level):
         if level is not None:
-            #here we should load against a dict the selected level
             var = self.levels[str(level)](self.screen, self.clock)
             var.run()
             self.next_level = var.next_level
@@ -72,4 +76,3 @@ if __name__ == "__main__":
     pygame.event.set_blocked(VIDEORESIZE)
     ECO = Eco(SCREEN)
     ECO.run()
-    #profile.run('ECO.loop()')
