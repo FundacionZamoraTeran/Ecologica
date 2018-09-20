@@ -26,7 +26,7 @@ class Forest:
         self.background = utils.load_image("background.png", "forest")
         self.background_width = self.background.get_size()[0]
         self.foreground = utils.load_image("foreground.png", "forest")
-        self.current_slide = 17
+        self.current_slide = 1
         self.prompts = {
             "bin": Prompt(self.screen,
                             self.clock,
