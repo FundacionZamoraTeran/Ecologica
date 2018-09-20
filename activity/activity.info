@@ -1,6 +1,6 @@
 [Activity]
-name = Ecologica
-activity_version = 1.0.2
+name = Ecológica
+activity_version = 1.0.3
 bundle_id = org.fundacionzt.ecologica
 exec = sugar-activity GameActivity.GameActivity
 icon = vidar
