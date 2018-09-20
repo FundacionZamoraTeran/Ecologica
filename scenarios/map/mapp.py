@@ -98,12 +98,15 @@ class Map:
                                 self.marker_level = 3
                             else:
                                 self.marker_level += 1
+                        elif (self.marker_level == 6  and not self.slot["stages"]["bosque"]):
+                            self.marker_level = 6
                         elif (4 < self.marker_level < 7 and
                               len(filter(lambda x: x is True, self.slot["stages"].values())) >= 6):
                             self.marker_level += 1
                         elif (self.marker_level == 5 and
                               len(filter(lambda x: x is True, self.slot["stages"].values())) < 6):
                             self.marker_level = 5
+                            #if forest is not passed?
                         else:
                             self.marker_level = 7
 

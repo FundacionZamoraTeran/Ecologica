@@ -547,6 +547,7 @@ class Farm:
                                 #seeder lot interactions
                                 if (7596 <self.player.real_x < 7764
                                     and self.stats["flags"]["planted"] is False
+                                    and self.stats["flags"]["tube"]
                                     and "plant" in self.stats["inv"]):
                                     self.stats["flags"]["planted"] = True
                                     self.stats["inv"].remove("tools")
@@ -714,6 +715,7 @@ class Farm:
             self.prompts["tube"].float(rel_x)
         if (7596 <self.player.real_x < 7764
             and self.stats["flags"]["planted"] is False
+            and self.stats["flags"]["tube"]
             and "plant" in self.stats["inv"]):
             self.prompts["hole"].float(rel_x)
         if (7763 <self.player.real_x < 8164
