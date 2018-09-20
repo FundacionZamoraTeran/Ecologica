@@ -25,7 +25,7 @@ class Farm:
         self.character = "diego"
         self.background = utils.load_image("background.png", "farm2")
         self.background_width = self.background.get_size()[0]
-        self.current_slide = 13
+        self.current_slide = 1
         self.prompts = {
             "plant": Prompt(self.screen,
                             self.clock,
@@ -116,8 +116,7 @@ class Farm:
                                "map2.png",
                                140,
                                108,
-                               "HUD",
-                               flag=True),
+                               "HUD"),
             "map_modal": utils.load_image("modal.png", "HUD"),
             "yes": Button((532, 449),
                           "yes1.png",
@@ -295,7 +294,7 @@ class Farm:
                                         self.hud["bird_icon"].on_focus(self.screen)
                         elif self.current_slide in (1, 2, 3, 11):
                             self.next.on_press(self.screen)
-                            self.current_slide +=1
+                            self.current_slide += 1
                         elif 3 < self.current_slide < 11:
                             self.next.on_press(self.screen)
                             self.current_slide = 13
@@ -466,10 +465,6 @@ class Farm:
         if (6120 < self.player.real_x < 6334
             and self.stats["flags"]["covered"]):
             self.prompts["special"].float(rel_x)
-
-
-        print rel_x
-        print self.player.real_x
         self.player.update()
 
     def load_hud(self):
