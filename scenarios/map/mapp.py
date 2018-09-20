@@ -83,11 +83,13 @@ class Map:
                             running = False
                             utils.loading_screen(self.screen)
                     elif event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
-                        if self.marker_level > 1:
+                        if 1 < self.marker_level < 7:
                             if self.marker_level == 3:
                                 self.marker_level = 1
                             else:
                                 self.marker_level -= 1
+                        elif self.marker_level >= 7:
+                            self.marker_level = 6
                         else:
                             self.marker_level = 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
