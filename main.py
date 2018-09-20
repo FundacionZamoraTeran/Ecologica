@@ -59,9 +59,9 @@ class Eco:
         pygame.quit()
         sys.exit(0)
 
-    def level_selector(self, screen, level, slot):
-        if level is not None and slot is not None:
+    def level_selector(self, screen, level):
+        if level is not None:
             #here we should load against a dict the selected level
-            var = self.levels[str(level)](screen, self.clock, slot)
+            var = self.levels[str(level)](screen, self.clock)
             var.run()
             self.next_level = var.next_level

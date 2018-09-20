@@ -1,9 +1,9 @@
 [Activity]
 name = Ecologica
-activity_version = 1.0.1
+activity_version = 1.0.2
 bundle_id = org.fundacionzt.ecologica
 exec = sugar-activity GameActivity.GameActivity
-icon = vidar.png
+icon = vidar
 show_launcher = yes
 max_participants = 1
 summary = "Una Eco aventura."
