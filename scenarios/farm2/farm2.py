@@ -184,13 +184,13 @@ class Farm:
                              True)
         self.focus = "game"
 
-        self.prev = Button((178, 703),
+        self.prev = Button((178, 693),
                            "prev1.png",
                            "prev2.png",
                            48,
                            42,
                            "farm2")
-        self.next = Button((1104, 703),
+        self.next = Button((1104, 693),
                            "next1.png",
                            "next2.png",
                            48,
@@ -405,25 +405,25 @@ class Farm:
             self.player.update()
             self.screen.blit(self.icons["hen"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
-            self.screen.blit(self.next.base, (1104, 703))
+            self.screen.blit(self.next.base, (1104, 693))
         elif number in (2, 3, 12):
             self.player.update()
             self.screen.blit(self.icons["hen"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
-            self.screen.blit(self.prev.base, (178, 703))
-            self.screen.blit(self.next.base, (1104, 703))
+            self.screen.blit(self.prev.base, (178, 693))
+            self.screen.blit(self.next.base, (1104, 693))
         elif number == 4:
             self.player.update()
             self.screen.blit(self.icons["diego"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
-            self.screen.blit(self.prev.base, (178, 703))
-            self.screen.blit(self.next.base, (1104, 703))
+            self.screen.blit(self.prev.base, (178, 693))
+            self.screen.blit(self.next.base, (1104, 693))
         elif 4 < number < 11:
             #diego commenting on an item
             self.player.update()
             self.screen.blit(self.icons["diego"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
-            self.screen.blit(self.next.base, (1104, 703))
+            self.screen.blit(self.next.base, (1104, 693))
 
     def actors_load(self, rel_x):
         if (604 < self.player.real_x < 772
