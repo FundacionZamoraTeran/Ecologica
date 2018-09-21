@@ -70,7 +70,7 @@ class Library:
 
 
         self.dialogue = {
-            "1": utils.load_image("d1.png", "school/dialogue"), #parrot
+            "1": utils.load_image("d12.png", "school/dialogue"), #parrot
         }
 
         self.icons = {
