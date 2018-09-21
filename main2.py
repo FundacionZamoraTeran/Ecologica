@@ -74,5 +74,6 @@ if __name__ == "__main__":
     pygame.event.set_blocked(MOUSEBUTTONUP)
     pygame.event.set_blocked(MOUSEBUTTONDOWN)
     pygame.event.set_blocked(VIDEORESIZE)
+    pygame.mouse.set_visible(False)
     ECO = Eco(SCREEN)
     ECO.run()

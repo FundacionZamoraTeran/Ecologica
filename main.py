@@ -46,6 +46,7 @@ class Eco:
     def quit(self):
         self.running = False
     def run(self):
+        pygame.mouse.set_visible(False)
         screen = pygame.display.get_surface()
         pygame.event.set_blocked([MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN])
         self.reset_clock()
