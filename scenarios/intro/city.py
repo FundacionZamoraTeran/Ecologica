@@ -100,11 +100,11 @@ class City:
 
     def actors_load(self):
         if 59 < self.player.rect.x < 316:
-            self.screen.blit(self.dialogue["1"], (90, 506))
+            self.screen.blit(self.dialogue["1"], (101, 576))
         elif 315 < self.player.rect.x < 691:
-            self.screen.blit(self.dialogue["2"], (90, 506))
+            self.screen.blit(self.dialogue["2"], (101, 576))
         elif 690 < self.player.rect.x < 1005:
-            self.screen.blit(self.dialogue["3"], (90, 506))
+            self.screen.blit(self.dialogue["3"], (101, 576))
         elif 1005 < self.player.rect.x < 1201:
             self.prompt.float(0)
         self.player.update()
