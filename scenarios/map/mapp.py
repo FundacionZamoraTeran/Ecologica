@@ -131,9 +131,9 @@ class Map:
         elif self.session["completed"] or self.marker_level >= 7:
             pos = (902, 809) # vidar chapel
         self.frame += 1
-        if self.frame > 3:
+        if self.frame > 9:
             self.frame = 0
-        self.screen.blit(self.parrot[str(self.frame//2)], pos)
+        self.screen.blit(self.parrot[str(self.frame//5)], pos)
 
     def load_worlds(self):
         if not self.session["completed"]:
