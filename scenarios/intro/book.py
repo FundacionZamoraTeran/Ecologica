@@ -41,7 +41,7 @@ class Book:
 
         self.player = Parrot(self.screen,
                               self.clock,
-                             (15, 810),
+                             (15, 790),
                              self.character,
                              2400,
                              True)
@@ -110,12 +110,12 @@ class Book:
             self.screen.blit(self.next.base, (270-rel_x, 830))
 
         if 59 < self.player.real_x < 511:
-            self.screen.blit(self.dialogue["1"], (200, 606))
+            self.screen.blit(self.dialogue["1"], (200, 636))
         elif 510 < self.player.real_x < 1216:
-            self.screen.blit(self.poem, (98, 50))
+            self.screen.blit(self.poem, (97-rel_x, 31))
         elif 1290 < self.player.real_x < 1756:
-            self.screen.blit(self.dialogue["2"], (1350-rel_x, 606))
+            self.screen.blit(self.dialogue["2"], (1350-rel_x, 636))
         elif 1755 < self.player.real_x < 2223:
-            self.screen.blit(self.dialogue["3"], (1350-rel_x, 606))
+            self.screen.blit(self.dialogue["3"], (1350-rel_x, 636))
         elif 2222 < self.player.real_x < 2401:
             self.prompt.float(rel_x)
