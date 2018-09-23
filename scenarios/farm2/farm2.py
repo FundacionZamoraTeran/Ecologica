@@ -98,6 +98,7 @@ class Farm:
         }
 
         self.hud = {
+            "bg": utils.load_image("upper.png", ""),
             "bar": utils.load_image("bar.png", "HUD"),
             "bird_icon": Button((1053, 15),
                                 "icon1.png",
@@ -469,6 +470,8 @@ class Farm:
 
     def load_hud(self):
         #top icons
+        if self.focus == "bar":
+            self.screen.blit(self.hud["bg"], (0, 0))
         self.screen.blit(self.hud["bird_icon"].end, (1053, 15))
         self.screen.blit(self.hud["map_icon"].base, (903, 15))
         if self.show_bird_modal:

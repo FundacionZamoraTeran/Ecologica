@@ -129,6 +129,7 @@ class River:
         }
 
         self.hud = {
+            "bg": utils.load_image("upper.png", ""),
             "bar": utils.load_image("bar.png", "HUD"),
             "bird_icon": Button((1053, 15),
                                 "icon1.png",
@@ -730,6 +731,8 @@ class River:
 
     def load_hud(self):
         #top icons
+        if self.focus == "bar":
+            self.screen.blit(self.hud["bg"], (0, 0))
         self.screen.blit(self.hud["bird_icon"].end, (1053, 15))
         # self.screen.blit(self.hud["counter"], (1082, 117))
         # text = self.font.render(str(self.slot["coins"]),True, (255, 255, 255))
