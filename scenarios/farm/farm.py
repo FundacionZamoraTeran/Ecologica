@@ -690,7 +690,7 @@ class Farm:
                     self.player.real_x = 3700
             elif self.player.real_x > 3711:
                 self.player.rect.y = 556
-        elif (self.player.rect.y < 472):
+        elif self.player.rect.y < 472:
             self.player.rect.y = 473
 
         if (3964 < self.player.real_x < 4216

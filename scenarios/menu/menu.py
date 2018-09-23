@@ -171,3 +171,7 @@ class Menu:
                             self.options.flag = True
                             self.credits_but.on_focus(self.screen)
                             self.options.on_focus(self.screen)
+                    if event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
+                        ext = exit.Exit(self.screen, self.clock)
+                        ext.run()
+                        del ext
