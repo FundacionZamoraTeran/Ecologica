@@ -46,23 +46,23 @@ class Walk:
 
         self.prompts = {
             "ezer": Prompt(self.screen,
-                             self.clock,
-                             (883, 280),
-                             "prompt.png",
-                             "",
-                             (280, 350)),
+                           self.clock,
+                           (883, 230),
+                           "prompt.png",
+                           "",
+                           (230, 300)),
             "npc": Prompt(self.screen,
                           self.clock,
-                          (1786, 479),
+                          (1826, 429),
                           "prompt.png",
                           "",
-                          (380, 490)),
+                          (330, 440)),
             "exit": Prompt(self.screen,
-                             self.clock,
-                             (2341, 40),
-                             "prompt.png",
-                             "",
-                             (30, 120))
+                           self.clock,
+                           (2341, 40),
+                           "prompt.png",
+                           "",
+                           (30, 120))
         }
 
         self.wall_list = pygame.sprite.Group()
@@ -112,20 +112,20 @@ class Walk:
                            "9.png",
                            "intro/screen_2/walls")
         self.wall_10 = Wall(self.screen,
-                           self.clock,
-                           (1837, 241),
-                           "10.png",
-                           "intro/screen_2/walls")
+                            self.clock,
+                            (1837, 241),
+                            "10.png",
+                            "intro/screen_2/walls")
         self.wall_11 = Wall(self.screen,
-                           self.clock,
-                           (2037, 0),
-                           "11.png",
-                           "intro/screen_2/walls")
+                            self.clock,
+                            (2037, 0),
+                            "11.png",
+                            "intro/screen_2/walls")
         self.wall_12 = Wall(self.screen,
-                           self.clock,
-                           (1611, 828),
-                           "12.png",
-                           "intro/screen_2/walls")
+                            self.clock,
+                            (1611, 828),
+                            "12.png",
+                            "intro/screen_2/walls")
         self.wall_13 = Wall(self.screen,
                             self.clock,
                             (1833, 670),
@@ -160,17 +160,17 @@ class Walk:
         self.player.walls = self.wall_list
 
         self.prev = Button((260, 733),
-                          "prev1.png",
-                          "prev2.png",
-                          48,
-                          42,
-                          "intro")
+                           "prev1.png",
+                           "prev2.png",
+                           48,
+                           42,
+                           "intro")
         self.next = Button((1058, 733),
-                         "next1.png",
-                         "next2.png",
-                         48,
-                         42,
-                         "intro")
+                           "next1.png",
+                           "next2.png",
+                           48,
+                           42,
+                           "intro")
     def run(self):
         utils.load_bg("khachaturian.ogg")
         pygame.mixer.music.set_volume(consts.BG_VOLUME)
@@ -215,7 +215,8 @@ class Walk:
                         if self.current_scene == 1:
                             if 793 < self.player.real_x < 991:
                                 self.current_scene = 2
-                            elif (1717 < self.player.real_x < 1887) and (469 < self.player.rect.y < 611):
+                            elif ((1717 < self.player.real_x < 1887)
+                                  and (469 < self.player.rect.y < 611)):
                                 self.current_scene = 4
                             elif 2305 < self.player.real_x < 2401:
                                 utils.loading_screen(self.screen)
@@ -274,6 +275,6 @@ class Walk:
             self.screen.blit(self.next.base, (1058, 733))
 
     def actors_load(self, rel_x):
-        self.screen.blit(self.ezer["sprite"], (879-rel_x, 376))
-        self.screen.blit(self.npc["sprite"], (1777-rel_x, 501))
+        self.screen.blit(self.ezer["sprite"], (879-rel_x, 326))
+        self.screen.blit(self.npc["sprite"], (1817-rel_x, 451))
         self.player.update()
