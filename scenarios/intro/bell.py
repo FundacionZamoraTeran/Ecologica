@@ -29,7 +29,7 @@ class Bell:
         self.ring = utils.load_fx("bell.ogg")
         self.text = utils.load_image("d1.png", "intro/screen_6")
 
-        self.next = Button((908, 747),
+        self.next = Button((898, 737),
                            "next1.png",
                            "next2.png",
                            48,
@@ -50,7 +50,7 @@ class Bell:
                 self.frame = 0
             self.screen.blit(self.bell[self.frame//2], (0, 0))
             self.screen.blit(self.text, (240, 700))
-            self.screen.blit(self.next.base, (908, 747))
+            self.screen.blit(self.next.base, (898, 737))
 
             pygame.display.flip()
             self.clock.tick(consts.FPS)
