@@ -47,7 +47,7 @@ class Classroom:
 
         self.player = Parrot(self.screen,
                               self.clock,
-                             (15, 810),
+                             (15, 790),
                              self.character,
                              2400,
                              True)
@@ -112,31 +112,31 @@ class Classroom:
 
     def actors_load(self, rel_x):
         self.player.update()
+        print self.player.real_x
         if self.show_but:
             self.screen.blit(self.next.base, (270-rel_x, 830))
 
         if 59 < self.player.real_x < 166:
-            self.screen.blit(self.dialogue["1"], (200, 606))
+            self.screen.blit(self.dialogue["1"], (200, 636))
         elif 165 < self.player.real_x < 301:
-            self.screen.blit(self.npc, (100, 626))
-            self.screen.blit(self.dialogue["2"], (220, 606))
+            self.screen.blit(self.npc, (100, 656))
+            self.screen.blit(self.dialogue["2"], (220, 636))
         elif 300 < self.player.real_x < 526:
-            self.screen.blit(self.npc, (100, 626))
-            self.screen.blit(self.dialogue["3"], (220, 606))
+            self.screen.blit(self.npc, (100, 656))
+            self.screen.blit(self.dialogue["3"], (220, 636))
         elif 525 < self.player.real_x < 661:
-            self.screen.blit(self.npc, (100, 626))
-            self.screen.blit(self.dialogue["4"], (220, 606))
+            self.screen.blit(self.npc, (100, 656))
+            self.screen.blit(self.dialogue["4"], (220, 636))
         elif 660 < self.player.real_x < 796:
-            self.screen.blit(self.npc, (100, 626))
-            self.screen.blit(self.dialogue["5"], (220, 606))
+            self.screen.blit(self.npc, (100, 656))
+            self.screen.blit(self.dialogue["5"], (220, 636))
         elif 795 < self.player.real_x < 1036:
-            self.screen.blit(self.npc, (100, 626))
-            self.screen.blit(self.dialogue["6"], (220, 606))
+            self.screen.blit(self.npc, (100, 656))
+            self.screen.blit(self.dialogue["6"], (220, 636))
         elif 1290 < self.player.real_x < 1756:
-            self.screen.blit(self.npc, (100, 626))
-            self.screen.blit(self.dialogue["7"], (220, 606))
+            self.screen.blit(self.npc, (1300-rel_x, 656))
+            self.screen.blit(self.dialogue["7"], (1420-rel_x, 636))
         elif 1755 < self.player.real_x < 2221:
-            self.screen.blit(self.dialogue["8"], (220, 606))
+            self.screen.blit(self.dialogue["8"], (1400-rel_x, 636))
         elif 2220 < self.player.real_x < 2401:
             self.prompt.float(rel_x)
-
