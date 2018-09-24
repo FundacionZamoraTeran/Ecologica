@@ -35,14 +35,17 @@ class Map:
             self.current_slide = 1
             self.marker_level = 1
         else:
-            self.current_slide = 6
+            self.current_slide = 2
             self.marker_level = self.session["current_level"]
+            if self.marker_level == 6 and len(filter(lambda x: x is True, self.slot["stages"].values())) < 4:
+                self.marker_level = 5
+
         if self.session["completed"]:
             self.background = utils.load_image("good.png", "map")
         else:
             self.background = utils.load_image("bad.png", "map")
 
-        # self.modal = utils.load_image("modal.png", "map")
+        self.modal = utils.load_image("modal.png", "map")
         self.denied = utils.load_fx("denied.ogg")
 
         self.parrot = {
@@ -106,19 +109,24 @@ class Map:
                         elif (self.marker_level == 6  and not self.slot["stages"]["bosque"]):
                             self.marker_level = 6
                         elif (4 < self.marker_level < 7 and
-                              len(filter(lambda x: x is True, self.slot["stages"].values())) >= 6):
+                              len(filter(lambda x: x is True, self.slot["stages"].values())) >= 5):
                             self.marker_level += 1
                         elif (self.marker_level == 5 and
-                              len(filter(lambda x: x is True, self.slot["stages"].values())) < 6):
+                              len(filter(lambda x: x is True, self.slot["stages"].values())) < 4):
                             self.marker_level = 5
                             #if forest is not passed?
                         else:
                             self.marker_level = 7
+                    elif event.key == pygame.K_ESCAPE or event.key == consts.K_CIRCLE:
+                        self.current_slide = 2
 
     def render_scene(self):
-        if not self.session["is_new?"]:
-            self.load_worlds()
-        self.animate_marker()
+        if self.current_slide == 1:
+            self.screen.blit(self.modal, (0, 0))
+        elif self.current_slide == 2:
+            if not self.session["is_new?"]:
+                self.load_worlds()
+            self.animate_marker()
 
     def animate_marker(self):
         if self.marker_level == 1:

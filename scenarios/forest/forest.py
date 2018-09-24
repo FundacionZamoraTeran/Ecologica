@@ -220,7 +220,7 @@ class Forest:
                 if not self.stats["flags"]["dirt"]:
                     self.screen.blit(self.props["dirt"], (3790-abs(rel_x), 543))
                 if not self.stats["flags"]["extinguished"]:
-                    self.screen.blit(self.props["trash"], (4164-abs(rel_x), 535))
+                    self.screen.blit(self.props["trash"], (4164-abs(rel_x), 450))
                 self.render_scene(self.current_slide, abs(rel_x))
                 self.load_hud()
             pygame.display.flip()
