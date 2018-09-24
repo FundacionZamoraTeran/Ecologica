@@ -78,10 +78,15 @@ class Map:
                     self.next_level = None
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
-                        if self.marker_level > 0:
+                        if 0 < self.marker_level < 8:
                             self.next_level = self.marker_level
                             running = False
                             utils.loading_screen(self.screen)
+                        elif self.marker_level > 7:
+                            self.next_level = 7
+                            running = False
+                            utils.loading_screen(self.screen)
+
                     elif event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
                         if 1 < self.marker_level < 7:
                             if self.marker_level == 3:
