@@ -24,7 +24,7 @@ class Book:
         self.character = "parrot"
         self.background = utils.load_image("background.png", "intro/screen_7")
         self.background_width = self.background.get_size()[0]
-        self.poem = utils.load_image("poem.png", "intro/screen_7")
+        #self.poem = utils.load_image("poem.png", "intro/screen_7")
 
         self.dialogue = {
             "1": utils.load_image("d1.png", "intro/screen_7/dialogue"),
@@ -34,16 +34,16 @@ class Book:
 
         self.prompt = Prompt(self.screen,
                              self.clock,
-                             (2325, 540),
+                             (3525, 500),
                              "prompt.png",
                              "",
                              (400, 600))
 
         self.player = Parrot(self.screen,
-                              self.clock,
-                             (15, 790),
+                             self.clock,
+                             (15, 775),
                              self.character,
-                             2400,
+                             3600,
                              True)
         self.show_but = True
 
@@ -53,7 +53,7 @@ class Book:
                            48,
                            42,
                            "intro",
-                           flag=True),
+                           flag=True)
         self.next = Button((611, 441),
                            "next1.png",
                            "next2.png",
@@ -91,7 +91,7 @@ class Book:
                         self.player.direction = "right"
                         self.player.velocity = abs(self.player.velocity)
                     elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
-                        if 2222 < self.player.real_x < 2401:
+                        if 3407 < self.player.real_x < 3601:
                             utils.loading_screen(self.screen)
                             cou = court.Court(self.screen, self.clock)
                             cou.run()
@@ -105,17 +105,17 @@ class Book:
                         self.player.direction = "stand"
 
     def actors_load(self, rel_x):
+        print self.player.real_x
         self.player.update()
         if self.show_but:
-            self.screen.blit(self.next.base, (270-rel_x, 830))
+            self.screen.blit(self.next.base, (270-rel_x, 800))
 
-        if 59 < self.player.real_x < 511:
-            self.screen.blit(self.dialogue["1"], (200, 636))
-        elif 510 < self.player.real_x < 1216:
-            self.screen.blit(self.poem, (97-rel_x, 31))
-        elif 1290 < self.player.real_x < 1756:
-            self.screen.blit(self.dialogue["2"], (1350-rel_x, 636))
-        elif 1755 < self.player.real_x < 2223:
-            self.screen.blit(self.dialogue["3"], (1350-rel_x, 636))
-        elif 2222 < self.player.real_x < 2401:
+        if 59 < self.player.real_x < 1216:
+            self.screen.blit(self.dialogue["1"], (100-rel_x, 626))
+        elif 2504 < self.player.real_x < 2970:
+            self.screen.blit(self.dialogue["2"], (2540-rel_x, 626))
+        elif 2969 < self.player.real_x < 3408:
+            self.screen.blit(self.dialogue["3"], (2540-rel_x, 626))
+        elif 3419 < self.player.real_x < 3601:
             self.prompt.float(rel_x)
+

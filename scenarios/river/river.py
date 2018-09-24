@@ -112,6 +112,7 @@ class River:
                        utils.load_image("repaired.png", "river/bridge")),
             "handrail": utils.load_image("handrail.png", "river/bridge"),
             "trash": utils.load_image("trash.png", "river"),
+            "trash2": utils.load_image("trash2.png", "river"),
             "canoe": utils.load_image("canoe.png", "river"),
             "trees": (utils.load_image("tree_1.png", "river"),
                       utils.load_image("tree_2.png", "river"),
@@ -298,6 +299,7 @@ class River:
                 else:
                     self.screen.blit(self.props["bridge"][0], (4104-abs(rel_x), 482))
                 if self.stats["flags"]["trash"] is False:
+                    self.screen.blit(self.props["trash2"], (4354-abs(rel_x), 622))
                     self.screen.blit(self.props["trash"], (4333-abs(rel_x), 678))
                 self.screen.blit(self.props["canoe"], (4678-abs(rel_x), 650))
                 self.screen.blit(self.props["trees"][0], (4673-abs(rel_x), -100))

@@ -42,6 +42,13 @@ class End:
             "13": utils.load_image("d13.png", "end/dialogue")
         }
 
+
+        self.modal = {
+            "modal": utils.load_image("modal.png", "end"),
+            "exit": utils.load_image("exit.png", "end"),
+            "replay": utils.load_image("replay.png", "end")
+        }
+
         self.icons = {
             "cesar": utils.load_image("cesar_icon.png", "end"),
             "ena": utils.load_image("ena_icon.png", "end"),
@@ -49,6 +56,8 @@ class End:
             "ezer": utils.load_image("ezer_icon.png", "end"),
             "vidar": utils.load_image("vidar_icon.png", "end")
         }
+
+        self.replay = False
 
         self.prev = Button((178, 803),
                            "prev1.png",
@@ -80,20 +89,27 @@ class End:
                     self.next_level = None
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
-                        if 1 < self.current_slide:
+                        if self.current_slide == 14:
+                            pass
+                        elif 1 < self.current_slide:
                             self.prev.on_press(self.screen)
                             self.current_slide -= 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
-                        if self.current_slide < 13:
+                        if self.current_slide < 14:
                             self.next.on_press(self.screen)
                             self.current_slide += 1
-                        elif self.current_slide == 13:
-                            self.next.on_press(self.screen)
-                            running = False
-                            utils.loading_screen(self.screen)
-                            #save here
-                            if not self.slot["stages"]["completado"] is True:
-                                saves.save(8, "Completado", "completado")
+                    elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
+                        self.replay = True
+                    elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
+                        self.replay = False
+                    elif event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
+                        running = False
+                        utils.loading_screen(self.screen)
+                        #save here
+                        if not self.slot["stages"]["completado"] is True:
+                            saves.save(8, "Completado", "completado")
+                        if not self.replay:
+                            self.next_level = None
 
     def render_scene(self, number):
         if number == 1:
@@ -137,3 +153,11 @@ class End:
             self.screen.blit(self.dialogue[str(number)], (139, 753))
             self.screen.blit(self.prev.base, (178, 803))
             self.screen.blit(self.next.base, (1104, 803))
+        elif number == 14:
+            self.screen.blit(self.background_4, (0, 0))
+            self.screen.blit(self.modal["modal"], (0, 0))
+            if self.replay:
+                self.screen.blit(self.modal["replay"], (357, 425))
+            else:
+                self.screen.blit(self.modal["exit"], (357, 545))
+

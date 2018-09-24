@@ -59,7 +59,7 @@ class Intro:
                           48,
                           42,
                           "intro",
-                          flag=True),
+                          flag=True)
         self.next = Button((611, 441),
                          "next1.png",
                          "next2.png",

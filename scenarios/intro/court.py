@@ -32,14 +32,14 @@ class Court:
 
         self.prompt = Prompt(self.screen,
                              self.clock,
-                             (2325, 540),
+                             (2325, 500),
                              "prompt.png",
                              "",
                              (400, 600))
 
         self.player = Parrot(self.screen,
                               self.clock,
-                             (15, 810),
+                             (15, 775),
                              self.character,
                              2400,
                              True)
@@ -51,7 +51,7 @@ class Court:
                            48,
                            42,
                            "intro",
-                           flag=True),
+                           flag=True)
         self.next = Button((611, 441),
                            "next1.png",
                            "next2.png",
@@ -101,13 +101,12 @@ class Court:
     def actors_load(self, rel_x):
         self.player.update()
         if self.show_but:
-            self.screen.blit(self.next.base, (270-rel_x, 830))
-
+            self.screen.blit(self.next.base, (270-rel_x, 800))
         if 59 < self.player.real_x < 511:
-            self.screen.blit(self.dialogue["1"], (200, 606))
+            self.screen.blit(self.dialogue["1"], (102-rel_x, 626))
         elif 510 < self.player.real_x < 1066:
-            self.screen.blit(self.dialogue["2"], (200, 606))
+            self.screen.blit(self.dialogue["2"], (102-rel_x, 626))
         elif 1290 < self.player.real_x < 2223:
-            self.screen.blit(self.dialogue["3"], (1385-rel_x, 606))
+            self.screen.blit(self.dialogue["3"], (1305-rel_x, 626))
         elif 2222 < self.player.real_x < 2401:
             self.prompt.float(rel_x)
