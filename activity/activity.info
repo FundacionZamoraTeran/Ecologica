@@ -1,6 +1,6 @@
 [Activity]
 name = Ecológica
-activity_version = 1.0.5
+activity_version = 1.0.6
 bundle_id = org.fundacionzt.ecologica
 exec = sugar-activity GameActivity.GameActivity
 icon = paro
