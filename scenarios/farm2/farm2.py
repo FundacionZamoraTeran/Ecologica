@@ -452,6 +452,9 @@ class Farm:
             if self.player.velocity > 0:
                 self.player.stage["x"] = -3620
                 self.player.real_x = 4196
+        if ((4215 < self.player.real_x < 4833)
+            and self.player.rect.y < 520):
+            self.player.rect.y = 520
         if (4696 < self.player.real_x < 5005
             and not self.stats["flags"]["cover"]):
             self.prompts["cover"].float(rel_x)
