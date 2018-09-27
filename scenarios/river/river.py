@@ -455,16 +455,14 @@ class River:
                                     self.stats["flags"]["cabin"] = False
 
                                 #the various interactions with the cabin owner
-                                if (self.player.real_x+self.player.rect.width > 3700
-                                    and self.player.real_x+self.player.rect.width < 3950
+                                if (3570 < self.player.real_x+self.player.rect.width < 3950
                                     and self.stats["flags"]["cabin"]
                                     and not self.stats["flags"]["bridge"]
                                     and not self.stats["flags"]["fished"]):
                                     self.current_slide = 19
                                     self.stats["flags"]["bridge"] = True
                                     self.stats["inv"] = {"fishing_rod"}
-                                if (self.player.real_x+self.player.rect.width > 3700
-                                    and self.player.real_x+self.player.rect.width < 3950
+                                if (3570 < self.player.real_x+self.player.rect.width < 3950
                                     and self.stats["flags"]["cabin"]
                                     and self.stats["flags"]["fished"]
                                     and not self.stats["flags"]["open"]
@@ -670,8 +668,7 @@ class River:
             and self.stats["flags"]["logger"]
             and self.stats["flags"]["cabin"] == False):
             self.prompts["cabin"].float(rel_x)
-        if (self.player.real_x+self.player.rect.width > 3700
-            and self.player.real_x+self.player.rect.width < 3950
+        if (3570 < self.player.real_x+self.player.rect.width < 3950
             and self.stats["flags"]["cabin"]
             and (self.stats["flags"]["bridge"] == False or
                  ( self.stats["flags"]["fished"] and
@@ -702,12 +699,16 @@ class River:
             and self.player.real_x+self.player.rect.width < 9200
             and self.stats["flags"]["glass"]):
             self.prompts["guard"].float(rel_x)
-        if 4090 < self.player.real_x < 4790:
+        if 4050 < self.player.real_x < 4219:
+            self.player.rect.y = 570
+        elif 4090 < self.player.real_x < 4790:
             self.player.rect.y = 444
-        if 4790 < self.player.real_x < 7500:
+        if 6017 < self.player.real_x < 6971:
+            self.player.rect.y = 472
+        elif 4790 < self.player.real_x < 7500:
             if self.player.rect.y > 500:
                 self.player.rect.y = 500
-        if 8554 < self.player.real_x:
+        if  self.player.real_x > 8202:
             if self.player.rect.y < 492:
                 self.player.rect.y = 492
         if self.player.real_x+self.player.rect.width > 4004 and self.stats["flags"]["bridge"] is False:
