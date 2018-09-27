@@ -465,18 +465,19 @@ class Farm:
                                     self.current_slide = 5
                                 elif (1610 < self.player.real_x < 1722
                                       and not self.stats["flags"]["valve"]
+                                      and self.stats["flags"]["farmer"]
                                       and self.stats["flags"]["house"]
                                       and "tools" in self.stats["inv"]):
                                     self.stats["flags"]["valve"] = True
                                     self.stats["inv"] = {"tools", "valve"}
                                     self.current_slide = 11
-                                elif (1836 < self.player.real_x < 2006
+                                elif (1786 < self.player.real_x < 2006
                                       and self.stats["flags"]["house"]
                                       and self.stats["flags"]["farmer"] is False
                                       and "cabbage" not in self.stats["inv"]):
                                     self.stats["flags"]["farmer"] = True
                                     self.current_slide = 6
-                                elif (1838 < self.player.real_x < 2006
+                                elif (1786 < self.player.real_x < 2006
                                       and self.stats["flags"]["house"]
                                       and "cabbage" in self.stats["inv"]):
                                     self.stats["flags"]["dog"] = True
@@ -489,14 +490,14 @@ class Farm:
                                     self.stats["flags"]["barn"] = True
                                     self.current_slide = 15
                                 elif (443 < self.player.rect.y < 480
-                                      and 3616 < self.player.real_x < 3701
+                                      and 3566 < self.player.real_x < 3701
                                       and self.stats["flags"]["good_dog"] is False
                                       and self.stats["flags"]["dog"] is False
                                       and self.stats["flags"]["barn"]):
                                     self.stats["flags"]["dog"] = True
                                     self.current_slide = 16
                                 elif (443 < self.player.rect.y < 480
-                                      and 3616 < self.player.real_x < 3701
+                                      and 3566 < self.player.real_x < 3701
                                       and self.stats["flags"]["good_dog"] is False
                                       and "dogfood" in self.stats["inv"]
                                       and self.stats["flags"]["barn"]):
@@ -655,12 +656,13 @@ class Farm:
         if (1610 < self.player.real_x < 1722
                 and not self.stats["flags"]["valve"]
                 and self.stats["flags"]["house"]
+                and self.stats["flags"]["farmer"]
                 and "tools" in self.stats["inv"]):
             self.prompts["valve"].float(rel_x)
-        if (1606 < self.player.real_x < 1802
+        if (1606 < self.player.real_x < 1783
                 and self.stats["flags"]["house"] is False):
             self.prompts["house"].float(rel_x)
-        if (1836 < self.player.real_x < 2006
+        if (1786 < self.player.real_x < 2006
                 and self.stats["flags"]["house"]
                 and (self.stats["flags"]["farmer"] is False
                      or "cabbage" in self.stats["inv"])):
@@ -669,7 +671,7 @@ class Farm:
                 and self.stats["flags"]["barn"] is False):
             self.prompts["barn"].float(rel_x)
         if (443 < self.player.rect.y < 480
-                and 3616 < self.player.real_x < 3701
+                and 3566 < self.player.real_x < 3701
                 and (self.stats["flags"]["dog"] is False
                      or "dogfood" in self.stats["inv"])
                 and self.stats["flags"]["barn"]):
