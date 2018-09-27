@@ -233,16 +233,16 @@ class School:
                     elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
                         if self.current_slide == 12:
                             if self.focus == "game":
-                                if (396 < self.player.real_x < 676):
+                                if (346 < self.player.real_x < 676):
                                     self.current_slide = 1
                                     self.talked[0] = True
-                                if (998 < self.player.real_x < 1194):
+                                if (948 < self.player.real_x < 1194):
                                     self.current_slide = 5
                                     self.talked[1] = True
-                                if (1788 < self.player.real_x < 1984):
+                                if (1738 < self.player.real_x < 1984):
                                     self.current_slide = 7
                                     self.talked[2] = True
-                                if (2716 < self.player.real_x < 2884):
+                                if (2666 < self.player.real_x < 2884):
                                     self.current_slide = 9
                                     self.talked[3] = True
                                 if (3219 < self.player.real_x < 3601) and all(self.talked):
@@ -333,13 +333,13 @@ class School:
             self.screen.blit(self.next.base, (1104, 703))
 
     def actors_load(self, rel_x):
-        if (396 < self.player.real_x < 676):
+        if (346 < self.player.real_x < 676):
             self.prompts["npc1"].float(rel_x)
-        if (998 < self.player.real_x < 1194):
+        if (948 < self.player.real_x < 1194):
             self.prompts["npc2"].float(rel_x)
-        if (1788 < self.player.real_x < 1984):
+        if (1738 < self.player.real_x < 1984):
             self.prompts["npc3"].float(rel_x)
-        if (2716 < self.player.real_x < 2884):
+        if (2666 < self.player.real_x < 2884):
             self.prompts["principal"].float(rel_x)
         if (3219 < self.player.real_x < 3601) and all(self.talked):
             self.prompts["library"].float(rel_x)
