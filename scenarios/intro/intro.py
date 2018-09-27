@@ -61,10 +61,10 @@ class Intro:
                           "intro",
                           flag=True)
         self.next = Button((611, 441),
-                         "next1.png",
+                         "nnext.png",
                          "next2.png",
-                         48,
-                         42,
+                         89,
+                         77,
                          "intro")
 
     def run(self):
@@ -131,4 +131,4 @@ class Intro:
             self.prompt.float(rel_x)
         self.player.update()
         if self.show_but:
-            self.screen.blit(self.next.base, (270-rel_x, 730))
+            self.screen.blit(self.next.base, (280-rel_x, 725))

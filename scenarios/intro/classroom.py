@@ -61,10 +61,10 @@ class Classroom:
                            "intro",
                            flag=True)
         self.next = Button((611, 441),
-                           "next1.png",
+                           "nnext.png",
                            "next2.png",
-                           48,
-                           42,
+                           89,
+                           77,
                            "intro")
 
     def run(self):
@@ -114,7 +114,7 @@ class Classroom:
         self.player.update()
         print self.player.real_x
         if self.show_but:
-            self.screen.blit(self.next.base, (270-rel_x, 800))
+            self.screen.blit(self.next.base, (280-rel_x, 795))
 
         if 59 < self.player.real_x < 166:
             self.screen.blit(self.dialogue["1"], (100, 631))

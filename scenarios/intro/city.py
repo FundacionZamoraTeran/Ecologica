@@ -51,10 +51,10 @@ class City:
                           "intro",
                           flag=True)
         self.next = Button((611, 441),
-                         "next1.png",
+                         "nnext.png",
                          "next2.png",
-                         48,
-                         42,
+                         89,
+                         77,
                          "intro")
 
     def run(self):
@@ -109,4 +109,4 @@ class City:
             self.prompt.float(0)
         self.player.update()
         if self.show_but:
-            self.screen.blit(self.next.base, (170, 730))
+            self.screen.blit(self.next.base, (180, 725))
