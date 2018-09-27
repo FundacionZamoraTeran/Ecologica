@@ -317,18 +317,18 @@ class Forest:
                                     and "plant" in self.stats["inv"]):
                                     self.stats["flags"]["hole"] = True
                                     self.stats["inv"] = {}
-                                if (1607 < self.player.real_x < 1804
+                                if (1557 < self.player.real_x < 1804
                                     and (not self.stats["flags"]["ranger"])):
                                     self.stats["flags"]["ranger"] = True
                                     self.current_slide = 4
-                                elif (1607 < self.player.real_x < 1804
+                                elif (1557 < self.player.real_x < 1804
                                       and (self.stats["flags"]["ranger"] and
                                             (not self.stats["flags"]["plant"]
                                              and self.stats["flags"]["recycled"]))):
                                       self.stats["flags"]["plant"] = True
                                       self.stats["inv"] = {"plant"}
                                       self.current_slide = 14
-                                if (2721 < self.player.real_x < 2919
+                                if (2671 < self.player.real_x < 2919
                                     and not self.stats["flags"]["logger"]):
                                     self.current_slide = 7
                                 if (2918 < self.player.real_x < 3171
@@ -340,7 +340,7 @@ class Forest:
                                     and self.stats["flags"]["tools"]):
                                       self.stats["flags"]["dirt"] = True
                                       self.stats["inv"] = {"tools", "dirt"}
-                                if (4093 < self.player.real_x < 4375
+                                if (4013 < self.player.real_x < 4375
                                     and not self.stats["flags"]["extinguished"]
                                     and {"tools", "dirt"} == self.stats["inv"]):
                                       self.stats["flags"]["extinguished"] = True
@@ -451,12 +451,12 @@ class Forest:
             and not self.stats["flags"]["hole"]
             and "plant" in self.stats["inv"]):
             self.prompts["hole"].float(rel_x)
-        if (1607 < self.player.real_x < 1804
+        if (1557 < self.player.real_x < 1804
             and (not self.stats["flags"]["ranger"]
                  or (not self.stats["flags"]["plant"]
                      and self.stats["flags"]["recycled"]))):
             self.prompts["ranger"].float(rel_x)
-        if (2721 < self.player.real_x < 2919
+        if (2671 < self.player.real_x < 2919
             and not self.stats["flags"]["logger"]):
             self.prompts["logger"].float(rel_x)
         if (2918 < self.player.real_x < 3171
@@ -466,11 +466,12 @@ class Forest:
             and not self.stats["flags"]["dirt"]
             and self.stats["flags"]["tools"]):
             self.prompts["dirt"].float(rel_x)
-        if (4093 < self.player.real_x < 4375
+        if (4013 < self.player.real_x < 4375
             and not self.stats["flags"]["extinguished"]
             and {"tools", "dirt"} == self.stats["inv"]):
             self.prompts["trash"].float(rel_x)
         self.player.update()
+        print self.player.real_x
 
     def load_hud(self):
         #top icons
