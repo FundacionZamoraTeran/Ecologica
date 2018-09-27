@@ -39,6 +39,8 @@ class Map:
             self.marker_level = self.session["current_level"]
             if self.marker_level == 6 and len(filter(lambda x: x is True, self.slot["stages"].values())) < 4:
                 self.marker_level = 5
+            elif self.marker_level == 2:
+                self.marker_level = 3
 
         if self.session["completed"]:
             self.background = utils.load_image("good.png", "map")
