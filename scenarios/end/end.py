@@ -102,7 +102,8 @@ class End:
                         self.replay = True
                     elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
                         self.replay = False
-                    elif event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
+                    elif (event.key == pygame.K_RETURN or event.key == consts.K_CHECK
+                          or event.key == pygame.K_SPACE or event.key == consts.K_CROSS):
                         running = False
                         utils.loading_screen(self.screen)
                         #save here
