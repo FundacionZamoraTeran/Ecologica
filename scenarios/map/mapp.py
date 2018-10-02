@@ -23,6 +23,7 @@ class Map:
         self.vx_channel.set_volume(consts.VX_VOLUME)
         self.next_level = 1
         self.frame = 0
+        self.real_level = 1
 
         self.session = {
             "stages": self.slot["stages"],
@@ -39,7 +40,9 @@ class Map:
             self.marker_level = self.session["current_level"]
             if self.marker_level == 6 and len(filter(lambda x: x is True, self.slot["stages"].values())) < 4:
                 self.marker_level = 5
+                self.real_level = 5
             elif self.marker_level == 2:
+                self.real_level = 3
                 self.marker_level = 3
 
         if self.session["completed"]:
@@ -84,7 +87,7 @@ class Map:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN or event.key == consts.K_CHECK:
                         if 0 < self.marker_level < 8:
-                            self.next_level = self.marker_level
+                            self.next_level = self.real_level
                             running = False
                             utils.loading_screen(self.screen)
                         elif self.marker_level > 7:
@@ -133,18 +136,24 @@ class Map:
     def animate_marker(self):
         if self.marker_level == 1:
             pos = (314, 714) # school
+            self.real_level = 1
         elif self.marker_level == 2:
             pos = (588, 410) # city
-        elif self.marker_level == 3:
-            pos = (114, 144) # Farm2
         elif self.marker_level == 4:
+            pos = (114, 144) # Farm2
+            self.real_level = 3
+        elif self.marker_level == 3:
             pos = (205, 408) # Farm
+            self.real_level = 4
         elif self.marker_level == 5:
             pos = (713, 108) # river
+            self.real_level = 5
         elif self.marker_level == 6:
             pos = (885, 363) # forest
+            self.real_level = 6
         elif self.session["completed"] or self.marker_level >= 7:
             pos = (902, 809) # vidar chapel
+            self.real_level = 7
         self.frame += 1
         if self.frame > 9:
             self.frame = 0
