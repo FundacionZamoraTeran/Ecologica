@@ -471,7 +471,6 @@ class Forest:
             and {"tools", "dirt"} == self.stats["inv"]):
             self.prompts["trash"].float(rel_x)
         self.player.update()
-        print self.player.real_x
 
     def load_hud(self):
         #top icons

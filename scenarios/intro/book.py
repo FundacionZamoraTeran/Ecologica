@@ -105,7 +105,6 @@ class Book:
                         self.player.direction = "stand"
 
     def actors_load(self, rel_x):
-        print self.player.real_x
         self.player.update()
         if self.show_but:
             self.screen.blit(self.next.base, (280-rel_x, 795))

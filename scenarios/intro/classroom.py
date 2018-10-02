@@ -112,7 +112,6 @@ class Classroom:
 
     def actors_load(self, rel_x):
         self.player.update()
-        print self.player.real_x
         if self.show_but:
             self.screen.blit(self.next.base, (280-rel_x, 795))
 
