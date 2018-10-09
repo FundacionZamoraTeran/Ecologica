@@ -38,7 +38,7 @@ class Map:
         else:
             self.current_slide = 2
             self.marker_level = self.session["current_level"]
-            if self.marker_level == 6 and len(filter(lambda x: x is True, self.slot["stages"].values())) < 4:
+            if self.marker_level == 6 and len(list(filter(lambda x: x is True, self.slot["stages"].values()))) < 4:
                 self.marker_level = 5
                 self.real_level = 5
             elif self.marker_level == 2:
@@ -114,10 +114,10 @@ class Map:
                         elif (self.marker_level == 6 and not self.slot["stages"]["bosque"]):
                             self.marker_level = 6
                         elif (4 < self.marker_level < 7 and
-                              len(filter(lambda x: x is True, self.slot["stages"].values())) >= 5):
+                              len(list(filter(lambda x: x is True, self.slot["stages"].values()))) >= 5):
                             self.marker_level += 1
                         elif (self.marker_level == 5 and
-                              len(filter(lambda x: x is True, self.slot["stages"].values())) < 5):
+                              len(list(filter(lambda x: x is True, self.slot["stages"].values()))) < 5):
                             self.marker_level = 5
                             #if forest is not passed?
                         else:
