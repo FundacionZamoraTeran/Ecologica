@@ -72,8 +72,8 @@ class School:
             "bird_icon": Button((1053, 15),
                                 "icon1.png",
                                 "icon2.png",
-                                136,
-                                112,
+                                138,
+                                120,
                                 "HUD",
                                 flag=True),
             "bird_modal_1": utils.load_image("h1.png", "school/HUD"),
@@ -82,7 +82,7 @@ class School:
                                "map1.png",
                                "map2.png",
                                140,
-                               108,
+                               120,
                                "HUD"),
             "map_modal": utils.load_image("modal.png", "HUD"),
             "yes": Button((532, 449),
@@ -357,3 +357,5 @@ class School:
             self.screen.blit(self.hud["map_modal"], (367, 191))
             self.screen.blit(self.hud["yes"].base, (517, 429))
             self.screen.blit(self.hud["no"].end, (656, 429))
+
+
