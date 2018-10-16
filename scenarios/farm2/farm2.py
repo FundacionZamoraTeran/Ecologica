@@ -171,6 +171,23 @@ class Farm:
             "12": utils.load_image("d12.png", "farm2/dialogue"),
         }
 
+        self.voices = {
+            "1": utils.load_vx("farm2/1.ogg"),
+            "2": utils.load_vx("farm2/2.ogg"),
+            "3": utils.load_vx("farm2/3.ogg"),
+            "4": utils.load_vx("farm2/4.ogg"),
+            "5": utils.load_vx("farm2/5.ogg"),
+            "6": utils.load_vx("farm2/6.ogg"),
+            "7": utils.load_vx("farm2/7.ogg"),
+            "8": utils.load_vx("farm2/8.ogg"),
+            "9": utils.load_vx("farm2/9.ogg"),
+            "10": utils.load_vx("farm2/10.ogg"),
+            "11": utils.load_vx("farm2/11.ogg"),
+            "12": utils.load_vx("farm2/12.ogg")
+        }
+
+        self.played = [0] * 12
+
         self.icons = {
             "diego": utils.load_image("diego_icon.png", "farm2"),
             "hen": utils.load_image("hen_icon.png", "farm2")
@@ -273,6 +290,7 @@ class Farm:
                         elif ((1 < self.current_slide < 5)
                               or self.current_slide == 12):
                             self.prev.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide -= 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
                         if self.current_slide == 13:
@@ -295,9 +313,11 @@ class Farm:
                                         self.hud["bird_icon"].on_focus(self.screen)
                         elif self.current_slide in (1, 2, 3, 11):
                             self.next.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide += 1
                         elif 3 < self.current_slide < 11:
                             self.next.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide = 13
                         elif self.current_slide == 12:
                             running = False
@@ -401,25 +421,42 @@ class Farm:
 
     def render_scene(self, number, rel_x):
         if number == 13:
+            self.vx_channel.stop()
             self.actors_load(rel_x)
         elif number in (1, 11):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["hen"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 693))
         elif number in (2, 3, 12):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["hen"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 693))
             self.screen.blit(self.next.base, (1104, 693))
         elif number == 4:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["diego"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 693))
             self.screen.blit(self.next.base, (1104, 693))
         elif 4 < number < 11:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             #diego commenting on an item
             self.player.update()
             self.screen.blit(self.icons["diego"], (9, 654))
