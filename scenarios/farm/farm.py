@@ -266,6 +266,39 @@ class Farm:
             "28": utils.load_image("d28.png", "farm/dialogue") #rooster
         }
 
+        self.voices = {
+            "1": utils.load_vx("farm/1.ogg"),
+            "2": utils.load_vx("farm/2.ogg"),
+            "3": utils.load_vx("farm/3.ogg"),
+            "4": utils.load_vx("farm/4.ogg"),
+            "5": utils.load_vx("farm/5.ogg"),
+            "6": utils.load_vx("farm/6.ogg"),
+            "7": utils.load_vx("farm/7.ogg"),
+            "8": utils.load_vx("farm/8.ogg"),
+            "9": utils.load_vx("farm/9.ogg"),
+            "10": utils.load_vx("farm/10.ogg"),
+            "11": utils.load_vx("farm/11.ogg"),
+            "12": utils.load_vx("farm/12.ogg"),
+            "13": utils.load_vx("farm/13.ogg"),
+            "14": utils.load_vx("farm/14.ogg"),
+            "15": utils.load_vx("farm/15.ogg"),
+            "16": utils.load_vx("farm/16.ogg"),
+            "17": utils.load_vx("farm/17.ogg"),
+            "18": utils.load_vx("farm/18.ogg"),
+            "19": utils.load_vx("farm/19.ogg"),
+            "20": utils.load_vx("farm/20.ogg"),
+            "21": utils.load_vx("farm/21.ogg"),
+            "22": utils.load_vx("farm/22.ogg"),
+            "23": utils.load_vx("farm/23.ogg"),
+            "24": utils.load_vx("farm/24.ogg"),
+            "25": utils.load_vx("farm/25.ogg"),
+            "26": utils.load_vx("farm/26.ogg"),
+            "27": utils.load_vx("farm/27.ogg"),
+            "28": utils.load_vx("farm/28.ogg")
+        }
+
+        self.played = [0] * 28
+
         self.icons = {
             "cesar": utils.load_image("cesar_icon.png", "farm"),
             "farmer": utils.load_image("farmer_icon.png", "farm"),
@@ -405,6 +438,7 @@ class Farm:
                         elif ((1 < self.current_slide < 4)
                               or self.current_slide in (7, 8, 9, 10, 26, 27)):
                             self.prev.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide -= 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
                         if self.current_slide == 29:
@@ -428,10 +462,12 @@ class Farm:
                         elif ((self.current_slide < 3)
                               or self.current_slide in (6, 7, 8, 9, 25, 26)):
                             self.next.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide += 1
                         elif ((10 < self.current_slide < 25)
                               or self.current_slide in (3, 4, 5, 10, 27)):
                             self.next.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide = 29
                         elif self.current_slide == 28:
                             running = False
@@ -611,19 +647,32 @@ class Farm:
 
     def render_scene(self, number, rel_x):
         if number == 29:
+            self.vx_channel.stop()
             self.actors_load(rel_x)
         elif number in (1, 28):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["rooster"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
         elif number == 2:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["rooster"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (3, 7, 9, 26):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["cesar"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
@@ -632,16 +681,29 @@ class Farm:
         elif ((3 < number < 6)
               or (10 < number < 25)):
             #cesar commenting on an item
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["cesar"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
-        elif number in (6, 25): #farmer initiating a conversation
+        elif number in (6, 25):
+            #farmer initiating a conversation
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["farmer"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (8, 10, 27):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["farmer"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
