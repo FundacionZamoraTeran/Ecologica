@@ -42,6 +42,24 @@ class End:
             "13": utils.load_image("d13.png", "end/dialogue")
         }
 
+        self.voices = {
+            "1": utils.load_vx("end/1.ogg"),
+            "2": utils.load_vx("end/2.ogg"),
+            "3": utils.load_vx("end/3.ogg"),
+            "4": utils.load_vx("end/4.ogg"),
+            "5": utils.load_vx("end/5.ogg"),
+            "6": utils.load_vx("end/6.ogg"),
+            "7": utils.load_vx("end/7.ogg"),
+            "8": utils.load_vx("end/8.ogg"),
+            "9": utils.load_vx("end/9.ogg"),
+            "10": utils.load_vx("end/10.ogg"),
+            "11": utils.load_vx("end/11.ogg"),
+            "12": utils.load_vx("end/12.ogg"),
+            "13": utils.load_vx("end/13.ogg"),
+            "14": utils.load_vx("end/14.ogg")
+        }
+
+        self.played = [0] * 14
 
         self.modal = {
             "modal": utils.load_image("modal.png", "end"),
@@ -93,10 +111,12 @@ class End:
                             pass
                         elif 1 < self.current_slide:
                             self.prev.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide -= 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
                         if self.current_slide < 14:
                             self.next.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide += 1
                     elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
                         self.replay = True
@@ -104,6 +124,7 @@ class End:
                         self.replay = False
                     elif (event.key == pygame.K_RETURN or event.key == consts.K_CHECK
                           or event.key == pygame.K_SPACE or event.key == consts.K_CROSS):
+                        self.vx_channel.stop()
                         running = False
                         utils.loading_screen(self.screen)
                         #save here
@@ -114,51 +135,82 @@ class End:
 
     def render_scene(self, number):
         if number == 1:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.screen.blit(self.background_1, (0, 0))
             self.screen.blit(self.icons["cesar"], (9, 754))
             self.screen.blit(self.dialogue[str(number)], (139, 753))
             self.screen.blit(self.next.base, (1104, 803))
         elif number == 2:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.screen.blit(self.background_1, (0, 0))
             self.screen.blit(self.icons["ena"], (9, 754))
             self.screen.blit(self.dialogue[str(number)], (139, 753))
             self.screen.blit(self.prev.base, (178, 803))
             self.screen.blit(self.next.base, (1104, 803))
         elif number == 3:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.screen.blit(self.background_2, (0, 0))
             self.screen.blit(self.icons["ezer"], (9, 754))
             self.screen.blit(self.dialogue[str(number)], (139, 753))
             self.screen.blit(self.prev.base, (178, 803))
             self.screen.blit(self.next.base, (1104, 803))
         elif number == 4:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.screen.blit(self.background_2, (0, 0))
             self.screen.blit(self.icons["diego"], (9, 754))
             self.screen.blit(self.dialogue[str(number)], (139, 753))
             self.screen.blit(self.prev.base, (178, 803))
             self.screen.blit(self.next.base, (1104, 803))
         elif number in (5, 6, 10, 11, 12):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.screen.blit(self.background_3, (0, 0))
             self.screen.blit(self.icons["vidar"], (9, 754))
             self.screen.blit(self.dialogue[str(number)], (139, 753))
             self.screen.blit(self.prev.base, (178, 803))
             self.screen.blit(self.next.base, (1104, 803))
         elif number in (7, 8, 9):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.screen.blit(self.background_3, (0, 0))
             self.screen.blit(self.icons["ena"], (9, 754))
             self.screen.blit(self.dialogue[str(number)], (139, 753))
             self.screen.blit(self.prev.base, (178, 803))
             self.screen.blit(self.next.base, (1104, 803))
         elif number == 13:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.screen.blit(self.background_4, (0, 0))
             self.screen.blit(self.icons["vidar"], (9, 754))
             self.screen.blit(self.dialogue[str(number)], (139, 753))
             self.screen.blit(self.prev.base, (178, 803))
             self.screen.blit(self.next.base, (1104, 803))
         elif number == 14:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.screen.blit(self.background_4, (0, 0))
             self.screen.blit(self.modal["modal"], (0, 0))
             if self.replay:
                 self.screen.blit(self.modal["replay"], (357, 425))
             else:
                 self.screen.blit(self.modal["exit"], (357, 545))
-
