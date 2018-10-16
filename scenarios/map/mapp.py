@@ -67,6 +67,9 @@ class Map:
             "6" : utils.load_image("forest.png", "map/worlds")
         }
 
+        self.voice = utils.load_vx("map/1.ogg")
+        self.played = 0
+
     def run(self):
         utils.load_bg("etwas.ogg")
         pygame.mixer.music.set_volume(consts.BG_VOLUME)
@@ -127,6 +130,10 @@ class Map:
 
     def render_scene(self):
         if self.current_slide == 1:
+            if self.played == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voice)
+                self.played = 1
             self.screen.blit(self.modal, (0, 0))
         elif self.current_slide == 2:
             if not self.session["is_new?"]:
