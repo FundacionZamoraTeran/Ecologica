@@ -32,6 +32,11 @@ class School:
             "2": utils.load_image("d2.png", "intro/screen_4/dialogue")
         }
 
+        self.voices = {
+            "1": utils.load_vx("intro/screen_4/1.ogg"),
+            "2": utils.load_vx("intro/screen_4/2.ogg")
+        }
+
         self.npc = {
             "sprite": utils.load_image("npc.png", "intro/screen_4"),
             "icon": utils.load_image("npc_icon.png", "intro/screen_4")
@@ -96,6 +101,8 @@ class School:
                           (290, 510),
                           self.character)
         self.player.walls = self.wall_list
+
+        self.played = [0, 0]
 
         self.prev = Button((260, 733),
                           "prev1.png",
@@ -177,19 +184,30 @@ class School:
                             self.player.direction = "stand"
     def render_scene(self):
         if self.current_scene == 1:
+            self.vx_channel.stop()
             if (457 < self.player.rect.x < 598) and (340 < self.player.rect.y < 399):
                 self.prompts["npc"].float(0)
             elif 766 < self.player.rect.x < 1201:
                 self.prompts["exit"].float(0)
             self.actors_load()
         elif self.current_scene == 2:
+            if self.played[0] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["1"])
+                self.played[0] = 1
+                self.played[1] = 0
             self.actors_load()
             self.screen.blit(self.dialogue["1"],(210, 678))
             self.screen.blit(self.npc["icon"], (68, 721))
             self.screen.blit(self.next.base, (1058, 733))
         elif self.current_scene == 3:
+            if self.played[1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["2"])
+                self.played[0] = 0
+                self.played[1] = 1
             self.actors_load()
-            self.screen.blit(self.dialogue["2"],(210, 678))
+            self.screen.blit(self.dialogue["2"], (210, 678))
             self.screen.blit(self.npc["icon"], (68, 721))
             self.screen.blit(self.prev.base, (260, 733))
             self.screen.blit(self.next.base, (1058, 733))

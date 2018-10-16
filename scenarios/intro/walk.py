@@ -35,6 +35,13 @@ class Walk:
             "4": utils.load_image("d4.png", "intro/screen_2/dialogue")
         }
 
+        self.voices = {
+            "1": utils.load_vx("intro/screen_2/1.ogg"),
+            "2": utils.load_vx("intro/screen_2/2.ogg"),
+            "3": utils.load_vx("intro/screen_2/3.ogg"),
+            "4": utils.load_vx("intro/screen_2/4.ogg")
+        }
+
         self.ezer = {
             "sprite": utils.load_image("ezer.png", "intro/screen_2"),
             "icon":utils.load_image("ezer_icon.png", "intro/screen_2")}
@@ -158,6 +165,7 @@ class Walk:
                           2400,
                           True)
         self.player.walls = self.wall_list
+        self.played = [0, 0, 0, 0]
 
         self.prev = Button((260, 733),
                            "prev1.png",
@@ -226,11 +234,13 @@ class Walk:
                                 running = False
 
                     elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
-                        self.player.direction = "down"
-                        self.player.y_velocity = abs(self.player.y_velocity)
+                        if self.current_scene == 1:
+                            self.player.direction = "down"
+                            self.player.y_velocity = abs(self.player.y_velocity)
                     elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
-                        self.player.direction = "up"
-                        self.player.y_velocity = -abs(self.player.y_velocity)
+                        if self.current_scene == 1:
+                            self.player.direction = "up"
+                            self.player.y_velocity = -abs(self.player.y_velocity)
 
                 elif event.type == pygame.KEYUP:
                     if self.current_scene == 1:
@@ -244,6 +254,7 @@ class Walk:
                             self.player.direction = "stand"
     def render_scene(self, rel_x):
         if self.current_scene == 1:
+            self.vx_channel.stop()
             if 793 < self.player.real_x < 991:
                 self.prompts["ezer"].float(rel_x)
             elif (1717 < self.player.real_x < 1887) and (469 < self.player.rect.y < 611):
@@ -252,22 +263,42 @@ class Walk:
                 self.prompts["exit"].float(rel_x)
             self.actors_load(rel_x)
         elif self.current_scene == 2:
+            if self.played[0] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["1"])
+                self.played[0] = 1
+                self.played[1] = 0
             self.actors_load(rel_x)
             self.screen.blit(self.dialogue["1"],(210, 678))
             self.screen.blit(self.ezer["icon"], (68, 721))
             self.screen.blit(self.next.base, (1058, 733))
         elif self.current_scene == 3:
+            if self.played[1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["2"])
+                self.played[0] = 0
+                self.played[1] = 1
             self.actors_load(rel_x)
             self.screen.blit(self.dialogue["2"],(210, 678))
             self.screen.blit(self.ezer["icon"], (68, 721))
             self.screen.blit(self.prev.base, (260, 733))
             self.screen.blit(self.next.base, (1058, 733))
         elif self.current_scene == 4:
+            if self.played[2] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["3"])
+                self.played[2] = 1
+                self.played[3] = 0
             self.actors_load(rel_x)
             self.screen.blit(self.dialogue["3"],(210, 678))
             self.screen.blit(self.npc["icon"], (68, 721))
             self.screen.blit(self.next.base, (1058, 733))
         elif self.current_scene == 5:
+            if self.played[3] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["4"])
+                self.played[2] = 0
+                self.played[3] = 1
             self.actors_load(rel_x)
             self.screen.blit(self.dialogue["4"],(210, 678))
             self.screen.blit(self.npc["icon"], (68, 721))

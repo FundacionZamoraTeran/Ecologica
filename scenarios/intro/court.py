@@ -30,6 +30,14 @@ class Court:
             "3": utils.load_image("d3.png", "intro/screen_8/dialogue")
         }
 
+        self.voices = {
+            "1": utils.load_vx("intro/screen_8/1.ogg"),
+            "2": utils.load_vx("intro/screen_8/2.ogg"),
+            "3": utils.load_vx("intro/screen_8/3.ogg")
+        }
+
+        self.played = [0, 0, 0]
+
         self.prompt = Prompt(self.screen,
                              self.clock,
                              (2325, 500),
@@ -90,6 +98,7 @@ class Court:
                         self.player.velocity = abs(self.player.velocity)
                     elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
                         if 2222 < self.player.real_x < 2401:
+                            self.vx_channel.stop()
                             running = False
 
                 elif event.type == pygame.KEYUP:
@@ -103,10 +112,27 @@ class Court:
         if self.show_but:
             self.screen.blit(self.next.base, (280-rel_x, 795))
         if 59 < self.player.real_x < 511:
+            if self.played[0] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["1"])
+                self.played[1] = 0
+                self.played[0] = 1
             self.screen.blit(self.dialogue["1"], (102-rel_x, 626))
         elif 510 < self.player.real_x < 1066:
+            if self.played[1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["2"])
+                self.played[0] = 0
+                self.played[2] = 0
+                self.played[1] = 1
             self.screen.blit(self.dialogue["2"], (102-rel_x, 626))
         elif 1290 < self.player.real_x < 2223:
+            if self.played[2] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["3"])
+                self.played[0] = 0
+                self.played[1] = 0
+                self.played[2] = 1
             self.screen.blit(self.dialogue["3"], (1305-rel_x, 626))
         elif 2222 < self.player.real_x < 2401:
             self.prompt.float(rel_x)

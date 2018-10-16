@@ -38,6 +38,19 @@ class Classroom:
             "8": utils.load_image("d8.png", "intro/screen_5/dialogue")
         }
 
+        self.voices = {
+            "1": utils.load_vx("intro/screen_5/1.ogg"),
+            "2": utils.load_vx("intro/screen_5/2.ogg"),
+            "3": utils.load_vx("intro/screen_5/3.ogg"),
+            "4": utils.load_vx("intro/screen_5/4.ogg"),
+            "5": utils.load_vx("intro/screen_5/5.ogg"),
+            "6": utils.load_vx("intro/screen_5/6.ogg"),
+            "7": utils.load_vx("intro/screen_5/7.ogg"),
+            "8": utils.load_vx("intro/screen_5/8.ogg")
+        }
+
+        self.played = [0] * 8
+
         self.prompt = Prompt(self.screen,
                              self.clock,
                              (2325, 500),
@@ -98,6 +111,7 @@ class Classroom:
                         self.player.velocity = abs(self.player.velocity)
                     elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
                         if 2220 < self.player.real_x < 2401:
+                            self.vx_channel.stop()
                             utils.loading_screen(self.screen)
                             bel = bell.Bell(self.screen, self.clock)
                             bel.run()
@@ -116,20 +130,67 @@ class Classroom:
             self.screen.blit(self.next.base, (280-rel_x, 795))
 
         if 59 < self.player.real_x < 166:
+            if self.played[0] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["1"])
+                self.played[1] = 0
+                self.played[0] = 1
             self.screen.blit(self.dialogue["1"], (100, 631))
         elif 165 < self.player.real_x < 301:
+            if self.played[1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["2"])
+                self.played[0] = 0
+                self.played[2] = 0
+                self.played[1] = 1
             self.screen.blit(self.dialogue["2"], (100, 631))
         elif 300 < self.player.real_x < 526:
+            if self.played[2] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["3"])
+                self.played[1] = 0
+                self.played[3] = 0
+                self.played[2] = 1
             self.screen.blit(self.dialogue["3"], (100, 631))
         elif 525 < self.player.real_x < 661:
+            if self.played[3] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["4"])
+                self.played[2] = 0
+                self.played[4] = 0
+                self.played[3] = 1
             self.screen.blit(self.dialogue["4"], (100, 631))
         elif 660 < self.player.real_x < 796:
+            if self.played[4] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["5"])
+                self.played[3] = 0
+                self.played[5] = 0
+                self.played[4] = 1
             self.screen.blit(self.dialogue["5"], (100, 631))
         elif 795 < self.player.real_x < 1036:
+            if self.played[5] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["6"])
+                self.played[4] = 0
+                self.played[6] = 0
+                self.played[5] = 1
             self.screen.blit(self.dialogue["6"], (100, 631))
         elif 1290 < self.player.real_x < 1756:
+            if self.played[6] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["7"])
+                self.played[5] = 0
+                self.played[7] = 0
+                self.played[6] = 1
             self.screen.blit(self.dialogue["7"], (1300-rel_x, 631))
         elif 1755 < self.player.real_x < 2221:
+            if self.played[7] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["8"])
+                self.played[0] = 0
+                self.played[6] = 0
+                self.played[7] = 1
             self.screen.blit(self.dialogue["8"], (1300-rel_x, 631))
         elif 2220 < self.player.real_x < 2401:
             self.prompt.float(rel_x)

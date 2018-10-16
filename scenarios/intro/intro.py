@@ -38,15 +38,27 @@ class Intro:
             "7": utils.load_image("d7.png", "intro/screen_1/dialogue")
         }
 
+        self.voices = {
+            "1": utils.load_vx("intro/screen_1/1.ogg"),
+            "2": utils.load_vx("intro/screen_1/2.ogg"),
+            "3": utils.load_vx("intro/screen_1/3.ogg"),
+            "4": utils.load_vx("intro/screen_1/4.ogg"),
+            "5": utils.load_vx("intro/screen_1/5.ogg"),
+            "6": utils.load_vx("intro/screen_1/6.ogg"),
+            "7": utils.load_vx("intro/screen_1/7.ogg")
+        }
+
+        self.played = [0] * 7
+
         self.prompt = Prompt(self.screen,
                              self.clock,
                              (2925, 540),
                              "prompt.png",
                              "",
-                             (400,600))
+                             (400, 600))
 
         self.player = Parrot(self.screen,
-                              self.clock,
+                             self.clock,
                              (150, 710),
                              self.character,
                              3000,
@@ -54,18 +66,18 @@ class Intro:
         self.show_but = True
 
         self.prev = Button((503, 441),
-                          "prev1.png",
-                          "prev2.png",
-                          48,
-                          42,
-                          "intro",
-                          flag=True)
+                           "prev1.png",
+                           "prev2.png",
+                           48,
+                           42,
+                           "intro",
+                           flag=True)
         self.next = Button((611, 441),
-                         "nnext.png",
-                         "next2.png",
-                         89,
-                         77,
-                         "intro")
+                           "nnext.png",
+                           "next2.png",
+                           89,
+                           77,
+                           "intro")
 
     def run(self):
         utils.load_bg("khachaturian.ogg")
@@ -77,6 +89,9 @@ class Intro:
             rel_x = self.player.stage["x"]
             if rel_x < consts.WIDTH_SCREEN:
                 self.screen.blit(self.background, (rel_x, 0))
+                if self.played[0] == 0:
+                    self.vx_channel.play(self.voices["1"])
+                    self.played[0] = 1
                 self.screen.blit(self.dialogue["1"], (44-abs(rel_x), 523))
                 self.actors_load(abs(rel_x))
             pygame.display.flip()
@@ -98,6 +113,7 @@ class Intro:
                         self.player.direction = "right"
                         self.player.velocity = abs(self.player.velocity)
                     elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
+                        self.vx_channel.stop()
                         if 2789 < self.player.real_x < 3000:
                             utils.loading_screen(self.screen)
                             wal = walk.Walk(self.screen, self.clock)
@@ -116,16 +132,45 @@ class Intro:
 
     def actors_load(self, rel_x):
         if 448 < self.player.real_x < 980:
+            if self.played[1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["2"])
+                self.played[1] = 1
             self.screen.blit(self.dialogue["2"], (506-rel_x, 506))
         elif 1018 < self.player.real_x < 1298:
+            if self.played[2] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["3"])
+                self.played[1] = 0
+                self.played[2] = 1
             self.screen.blit(self.dialogue["3"], (1083-rel_x, 506))
         elif 1297 < self.player.real_x < 1578:
+            if self.played[3] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["4"])
+                self.played[2] = 0
+                self.played[3] = 1
             self.screen.blit(self.dialogue["4"], (1083-rel_x, 506))
         elif 1605 < self.player.real_x < 2166:
+            if self.played[4] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["5"])
+                self.played[3] = 0
+                self.played[4] = 1
             self.screen.blit(self.dialogue["5"], (1668-rel_x, 506))
         elif 2194 < self.player.real_x < 2446:
+            if self.played[5] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["6"])
+                self.played[4] = 0
+                self.played[5] = 1
             self.screen.blit(self.dialogue["6"], (2250-rel_x, 506))
         elif 2445 < self.player.real_x < 2754:
+            if self.played[6] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["7"])
+                self.played[5] = 0
+                self.played[6] = 1
             self.screen.blit(self.dialogue["7"], (2250-rel_x, 506))
         elif 2789 < self.player.real_x < 3000:
             self.prompt.float(rel_x)

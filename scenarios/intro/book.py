@@ -32,6 +32,15 @@ class Book:
             "3": utils.load_image("d3.png", "intro/screen_7/dialogue")
         }
 
+        self.voices = {
+            "1": utils.load_vx("intro/screen_7/1.ogg"),
+            "2": utils.load_vx("intro/screen_7/poem.ogg"),
+            "3": utils.load_vx("intro/screen_7/2.ogg"),
+            "4": utils.load_vx("intro/screen_7/3.ogg")
+        }
+
+        self.played = [0, 0, 0, 0]
+
         self.prompt = Prompt(self.screen,
                              self.clock,
                              (3525, 500),
@@ -92,6 +101,7 @@ class Book:
                         self.player.velocity = abs(self.player.velocity)
                     elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
                         if 3407 < self.player.real_x < 3601:
+                            self.vx_channel.stop()
                             utils.loading_screen(self.screen)
                             cou = court.Court(self.screen, self.clock)
                             cou.run()
@@ -110,10 +120,33 @@ class Book:
             self.screen.blit(self.next.base, (280-rel_x, 795))
 
         if 59 < self.player.real_x < 1216:
+            if self.played[0] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["1"])
+                self.played[1] = 0
+                self.played[0] = 1
             self.screen.blit(self.dialogue["1"], (100-rel_x, 626))
+        elif 1218 < self.player.real_x < 2503:
+            if self.played[1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["2"])
+                self.played[2] = 0
+                self.played[0] = 0
+                self.played[1] = 1
         elif 2504 < self.player.real_x < 2970:
+            if self.played[2] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["3"])
+                self.played[3] = 0
+                self.played[1] = 0
+                self.played[2] = 1
             self.screen.blit(self.dialogue["2"], (2540-rel_x, 626))
         elif 2969 < self.player.real_x < 3408:
+            if self.played[3] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["4"])
+                self.played[0] = 0
+                self.played[3] = 1
             self.screen.blit(self.dialogue["3"], (2540-rel_x, 626))
         elif 3419 < self.player.real_x < 3601:
             self.prompt.float(rel_x)

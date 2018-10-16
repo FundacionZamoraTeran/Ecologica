@@ -1,3 +1,4 @@
+import sys
 import pygame
 
 from gi.repository import Gtk
@@ -30,6 +31,11 @@ class City:
             "3": utils.load_image("d3.png", "intro/screen_3/dialogue"),
         }
 
+        self.voices = {
+            "1": utils.load_vx("intro/screen_3/1.ogg"),
+            "2": utils.load_vx("intro/screen_3/2.ogg"),
+            "3": utils.load_vx("intro/screen_3/3.ogg")
+        }
         self.prompt = Prompt(self.screen,
                              self.clock,
                              (1125, 540),
@@ -42,6 +48,8 @@ class City:
                              (15, 710),
                              self.character)
         self.show_but = True
+
+        self.played = [0, 0, 0]
 
         self.prev = Button((503, 441),
                           "prev1.png",
@@ -74,7 +82,7 @@ class City:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                    self.next_level = None
+                    sys.exit(0)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
                         self.show_but = False
@@ -86,6 +94,7 @@ class City:
                         self.player.velocity = abs(self.player.velocity)
                     elif event.key == pygame.K_SPACE or event.key == consts.K_CROSS:
                         if 1005 < self.player.rect.x < 1201:
+                            self.vx_channel.stop()
                             utils.loading_screen(self.screen)
                             scho = school.School(self.screen, self.clock)
                             scho.run()
@@ -100,10 +109,27 @@ class City:
 
     def actors_load(self):
         if 59 < self.player.rect.x < 316:
+            if self.played[0] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["1"])
+                self.played[0] = 1
+                self.played[1] = 0
             self.screen.blit(self.dialogue["1"], (101, 576))
         elif 315 < self.player.rect.x < 691:
+            if self.played[1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["2"])
+                self.played[1] = 1
+                self.played[0] = 0
+                self.played[2] = 0
             self.screen.blit(self.dialogue["2"], (101, 576))
         elif 690 < self.player.rect.x < 1005:
+            if self.played[2] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices["3"])
+                self.played[2] = 1
+                self.played[1] = 0
+                self.played[0] = 0
             self.screen.blit(self.dialogue["3"], (101, 576))
         elif 1005 < self.player.rect.x < 1201:
             self.prompt.float(0)
