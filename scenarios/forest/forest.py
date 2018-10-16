@@ -166,6 +166,27 @@ class Forest:
             "16": utils.load_image("d16.png", "forest/dialogue") # motmot
         }
 
+        self.voices = {
+            "1": utils.load_vx("forest/1.ogg"),
+            "2": utils.load_vx("forest/2.ogg"),
+            "3": utils.load_vx("forest/3.ogg"),
+            "4": utils.load_vx("forest/4.ogg"),
+            "5": utils.load_vx("forest/5.ogg"),
+            "6": utils.load_vx("forest/6.ogg"),
+            "7": utils.load_vx("forest/7.ogg"),
+            "8": utils.load_vx("forest/8.ogg"),
+            "9": utils.load_vx("forest/9.ogg"),
+            "10": utils.load_vx("forest/10.ogg"),
+            "11": utils.load_vx("forest/11.ogg"),
+            "12": utils.load_vx("forest/12.ogg"),
+            "13": utils.load_vx("forest/13.ogg"),
+            "14": utils.load_vx("forest/14.ogg"),
+            "15": utils.load_vx("forest/15.ogg"),
+            "16": utils.load_vx("forest/16.ogg")
+        }
+
+        self.played = [0] * 16
+
         self.icons = {
             "luis": utils.load_image("luis_icon.png", "forest"),
             "ranger": utils.load_image("ranger_icon.png", "forest"),
@@ -253,6 +274,7 @@ class Forest:
                                         self.hud["map_icon"].on_focus(self.screen)
                         elif self.current_slide not in (1, 4, 7, 12, 13, 14, 16 ):
                             self.prev.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide -= 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
                         if self.current_slide == 17:
@@ -275,10 +297,12 @@ class Forest:
                                         self.hud["bird_icon"].on_focus(self.screen)
                         elif self.current_slide in (1, 2, 4, 5, 7, 8, 9, 10, 14):
                             self.next.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide += 1
                         elif self.current_slide not in (1, 2, 4, 5, 7, 8,
                                                         9, 10, 14, 16):
                             self.next.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide = 17
 
                         elif self.current_slide == 16:
@@ -386,15 +410,24 @@ class Forest:
 
     def render_scene(self, number, rel_x):
         if number == 17:
+            self.vx_channel.stop()
             self.actors_load(rel_x)
             self.screen.blit(self.foreground, (1427-rel_x, -100))
         elif number in (1, 16):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.foreground, (1427-rel_x, -100))
             self.screen.blit(self.icons["motmot"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (2, 3, 11):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.foreground, (1427-rel_x, -100))
             self.screen.blit(self.icons["motmot"], (9, 654))
@@ -402,6 +435,10 @@ class Forest:
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (6, 9, 15):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.foreground, (1427-rel_x, -100))
             self.screen.blit(self.icons["luis"], (9, 654))
@@ -410,6 +447,10 @@ class Forest:
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (7, 12, 13):
             #luis commenting on an item or initiating
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.foreground, (1427-rel_x, -100))
             self.screen.blit(self.icons["luis"], (9, 654))
@@ -417,6 +458,10 @@ class Forest:
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (4, 14):
             #ranger initiating conversation
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.foreground, (1427-rel_x, -100))
             self.screen.blit(self.icons["ranger"], (9, 654))
@@ -424,6 +469,10 @@ class Forest:
             self.screen.blit(self.next.base, (1104, 703))
         elif number == 5:
             #ranger conversation
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.foreground, (1427-rel_x, -100))
             self.screen.blit(self.icons["ranger"], (9, 654))
@@ -432,6 +481,10 @@ class Forest:
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (8, 10):
             #logger conversation
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.foreground, (1427-rel_x, -100))
             self.screen.blit(self.icons["logger"], (9, 654))
