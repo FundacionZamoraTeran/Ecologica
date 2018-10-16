@@ -470,6 +470,7 @@ class Farm:
                             self.played[self.current_slide-1] = 0
                             self.current_slide = 29
                         elif self.current_slide == 28:
+                            self.vx_channel.stop()
                             running = False
                             utils.loading_screen(self.screen)
                             #save here

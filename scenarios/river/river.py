@@ -237,6 +237,46 @@ class River:
             "35": utils.load_image("d35.png", "river/dialogue") #ezer
         }
 
+        self.voices = {
+            "1": utils.load_vx("river/1.ogg"),
+            "2": utils.load_vx("river/2.ogg"),
+            "3": utils.load_vx("river/3.ogg"),
+            "4": utils.load_vx("river/4.ogg"),
+            "5": utils.load_vx("river/5.ogg"),
+            "6": utils.load_vx("river/6.ogg"),
+            "7": utils.load_vx("river/7.ogg"),
+            "8": utils.load_vx("river/8.ogg"),
+            "9": utils.load_vx("river/9.ogg"),
+            "10": utils.load_vx("river/10.ogg"),
+            "11": utils.load_vx("river/11.ogg"),
+            "12": utils.load_vx("river/12.ogg"),
+            "13": utils.load_vx("river/13.ogg"),
+            "14": utils.load_vx("river/14.ogg"),
+            "15": utils.load_vx("river/15.ogg"),
+            "16": utils.load_vx("river/16.ogg"),
+            "17": utils.load_vx("river/17.ogg"),
+            "18": utils.load_vx("river/18.ogg"),
+            "19": utils.load_vx("river/19.ogg"),
+            "20": utils.load_vx("river/20.ogg"),
+            "21": utils.load_vx("river/21.ogg"),
+            "22": utils.load_vx("river/22.ogg"),
+            "23": utils.load_vx("river/23.ogg"),
+            "24": utils.load_vx("river/24.ogg"),
+            "25": utils.load_vx("river/25.ogg"),
+            "26": utils.load_vx("river/26.ogg"),
+            "27": utils.load_vx("river/27.ogg"),
+            "28": utils.load_vx("river/28.ogg"),
+            "29": utils.load_vx("river/29.ogg"),
+            "30": utils.load_vx("river/30.ogg"),
+            "31": utils.load_vx("river/31.ogg"),
+            "32": utils.load_vx("river/32.ogg"),
+            "33": utils.load_vx("river/33.ogg"),
+            "34": utils.load_vx("river/34.ogg"),
+            "35": utils.load_vx("river/35.ogg")
+        }
+
+        self.played = [0] * 35
+
         self.icons = {
             "ezer": utils.load_image("ezer_icon.png", "river"),
             "owner": utils.load_image("owner_icon.png", "river"),
@@ -352,13 +392,10 @@ class River:
                                         self.hud["map_icon"].flag = True
                                         self.hud["bird_icon"].on_focus(self.screen)
                                         self.hud["map_icon"].on_focus(self.screen)
-                        elif ((1 < self.current_slide < 5)
-                              or (7 < self.current_slide < 12)
-                              or (15 < self.current_slide < 19)
-                              or (19 < self.current_slide < 23)
-                              or 25 < self.current_slide < 28
-                              or self.current_slide == 29
+                        elif (self.current_slide  in (2, 3, 4, 8, 9, 10, 11, 16,
+                                                      17, 18, 20, 21, 22, 26, 27, 29)
                               or 31 < self.current_slide < 34):
+                            self.played[self.current_slide-1] = 0
                             self.prev.on_press(self.screen)
                             self.current_slide -= 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
@@ -381,28 +418,24 @@ class River:
                                         self.hud["map_icon"].on_focus(self.screen)
                                         self.hud["bird_icon"].on_focus(self.screen)
                         elif ((self.current_slide < 4)
-                              or (6 < self.current_slide <11)
+                              or (6 < self.current_slide < 11)
                               or (14 < self.current_slide < 18)
-                              or (18 < self.current_slide <22)
+                              or (18 < self.current_slide < 22)
                               or (24 < self.current_slide < 27)
                               or self.current_slide == 28
                               or 30 < self.current_slide < 33):
                             self.next.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide +=1
                         elif ((3 < self.current_slide < 7)
-                              or self.current_slide == 11
+                              or self.current_slide in (11, 18, 22, 27, 29, 30, 33, 35)
                               or (12 < self.current_slide < 15)
-                              or self.current_slide == 18
-                              or self.current_slide == 22
-                              or (22 < self.current_slide < 25)
-                              or self.current_slide == 27
-                              or self.current_slide == 29
-                              or self.current_slide == 30
-                              or self.current_slide == 33
-                              or self.current_slide == 35):
+                              or (22 < self.current_slide < 25)):
+                            self.played[self.current_slide-1] = 0
                             self.next.on_press(self.screen)
                             self.current_slide = 36
                         elif self.current_slide == 34:
+                            self.vx_channel.stop()
                             running = False
                             utils.loading_screen(self.screen)
                             #save here
@@ -576,19 +609,32 @@ class River:
                         self.player.running = False
     def render_scene(self, number, rel_x):
         if number == 36:
+            self.vx_channel.stop()
             self.actors_load(rel_x)
-        elif number in (1, 28, 34) :
+        elif number in (1, 28, 34):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["parrot"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
         elif (1 < number < 4) or number == 27 or number == 29:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["parrot"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
         elif number == 4:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["ezer"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
@@ -599,55 +645,94 @@ class River:
               or (22 < number < 25)
               or number == 35):
             #ezer commenting on an item
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["ezer"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
-        elif number == 7: #logger initiating a conversation
+        elif number == 7:
+            #logger initiating a conversation
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["logger"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (8, 10, 17, 20, 22, 32):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["ezer"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (9, 11, 16, 18):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["logger"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
-        elif number == 15: #ezer initiating a conversation
+        elif number == 15:
+            #ezer initiating a conversation
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["ezer"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
-        elif number in (19, 25):  #owner initiating a conversation
+        elif number in (19, 25):
+            #owner initiating a conversation
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["owner"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (21, 26):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["owner"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
-        elif number in (30, 31):  #guard initiating a conversation
+        elif number in (30, 31):
+            #guard initiating a conversation
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["guard"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
         elif number == 33:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["guard"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
-
 
     def actors_load(self, rel_x):
         if (self.player.real_x+self.player.rect.width > 500
