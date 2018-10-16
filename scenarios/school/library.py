@@ -72,6 +72,8 @@ class Library:
         self.dialogue = {
             "1": utils.load_image("d12.png", "school/dialogue"), #parrot
         }
+        self.voice = utils.load_vx("school/12.ogg")
+        self.played = 0
 
         self.icons = {
             "parrot": utils.load_image("parrot_icon.png", "school"),
@@ -158,6 +160,7 @@ class Library:
                                         self.hud["map_icon"].on_focus(self.screen)
                                         self.hud["bird_icon"].on_focus(self.screen)
                         elif self.current_slide == 1:
+                            self.vx_channel.stop()
                             self.next.on_press(self.screen)
                             running = False
                     elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
@@ -216,6 +219,10 @@ class Library:
         if number == 2:
             self.actors_load()
         elif number == 1:
+            if self.played == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voice)
+                self.played = 1
             self.player.update()
             self.screen.blit(self.icons["parrot"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))

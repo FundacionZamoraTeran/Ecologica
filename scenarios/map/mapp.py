@@ -136,6 +136,7 @@ class Map:
                 self.played = 1
             self.screen.blit(self.modal, (0, 0))
         elif self.current_slide == 2:
+            self.vx_channel.stop()
             if not self.session["is_new?"]:
                 self.load_worlds()
             self.animate_marker()

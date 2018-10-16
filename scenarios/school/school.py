@@ -115,6 +115,23 @@ class School:
             "11": utils.load_image("d11.png", "school/dialogue") #ena
         }
 
+        self.voices = {
+            "1": utils.load_vx("school/1.ogg"),
+            "2": utils.load_vx("school/2.ogg"),
+            "3": utils.load_vx("school/3.ogg"),
+            "4": utils.load_vx("school/4.ogg"),
+            "5": utils.load_vx("school/5.ogg"),
+            "6": utils.load_vx("school/6.ogg"),
+            "7": utils.load_vx("school/7.ogg"),
+            "8": utils.load_vx("school/8.ogg"),
+            "9": utils.load_vx("school/9.ogg"),
+            "10": utils.load_vx("school/10.ogg"),
+            "11": utils.load_vx("school/11.ogg"),
+            "12": utils.load_vx("school/12.ogg")
+        }
+
+        self.played = [0] * 12
+
         self.icons = {
             "ena": utils.load_image("ena_icon.png", "school"),
             "npc1": utils.load_image("npc1_icon.png", "school"),
@@ -193,6 +210,7 @@ class School:
                                         self.hud["map_icon"].on_focus(self.screen)
                         elif self.current_slide not in (1, 5, 7, 9):
                             self.prev.on_press(self.screen)
+                            self.played[self.current_slide-1] = 0
                             self.current_slide -= 1
                     elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
                         if self.current_slide == 12:
@@ -216,8 +234,10 @@ class School:
                         elif self.current_slide in (1, 2, 3, 5, 7, 9, 10, 11):
                             self.next.on_press(self.screen)
                             self.current_slide +=1
+                            self.played[self.current_slide-2] = 0
                         elif self.current_slide in (4, 6, 8):
                             self.next.on_press(self.screen)
+                            self.played[self.current_slide-2] = 0
                             self.current_slide = 12
                     elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
                         if self.current_slide == 12 and self.focus == "game":
@@ -295,37 +315,62 @@ class School:
 
     def render_scene(self, number, rel_x):
         if number == 12:
+            self.vx_channel.stop()
             self.actors_load(rel_x)
         elif number in (1, 5, 7, 9):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["ena"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (3, 11):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["ena"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
         elif number in (2, 4):
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["npc1"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
         elif number == 6:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["npc2"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
         elif number == 8:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["npc3"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
             self.screen.blit(self.prev.base, (178, 703))
             self.screen.blit(self.next.base, (1104, 703))
         elif number == 10:
+            if self.played[number-1] == 0:
+                self.vx_channel.stop()
+                self.vx_channel.play(self.voices[str(number)])
+                self.played[number-1] = 1
             self.player.update()
             self.screen.blit(self.icons["principal"], (9, 654))
             self.screen.blit(self.dialogue[str(number)], (139, 653))
